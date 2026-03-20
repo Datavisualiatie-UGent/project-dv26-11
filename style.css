@@ -1,5 +1,4 @@
 *{
-    background-color:black;
     box-sizing: border-box;
 }
 
@@ -12,6 +11,7 @@ body{
     padding: 0;
     margin: 0;
     font: 1.2em sans-serif;
+    background-color:black;
 }
 
 
@@ -55,3 +55,20 @@ body{
     color: white;
     width: 33%;
 }
+
+.heatmap-vakje{
+    background-color: white;
+    border: solid white;
+}
+
+p{
+    color: whitesmoke;
+    border: solid rgba(255, 255, 255, 0);
+}
+
+
+.tick text { font-size: 12px; font-family: sans-serif; }
+.rect:hover { stroke: #ffffff; stroke-width: 2px; }
+
+
+svg{background-color: white;}
