@@ -1,0 +1,74 @@
+// 1. De data
+const rawData = [
+[143195.28, 172706.89, 301159.47, 417623.57, 247658.61],
+[17886.53, 133068.71, 210041.71, 304233.85, 149914.01],
+[6146.71, 35722.67, 207815.66, 280825.83, 193584.63],
+[6135.40, 18255.99, 82667.10, 432529.67, 401673.87],
+[4248.07, 10835.24, 33890.50, 160208.26, 1007351.65]
+];
+
+// Transformeer data naar een platte array
+const data = [];
+rawData.forEach((row, i) => {
+row.forEach((value, j) => {
+    data.push({ row: i, col: j, value: value });
+});
+});
+
+// 2. Afmetingen instellen
+const margin = {top: 30, right: 30, bottom: 30, left: 30},
+    width = 450 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
+
+const svg = d3.select("#heatmap")
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", `translate(${margin.left},${margin.top})`);
+
+// 3. Schalen
+const x = d3.scaleBand()
+.range([0, width])
+.domain([0, 1, 2, 3, 4])
+.padding(0.05);
+
+const y = d3.scaleBand()
+.range([0, height])
+.domain([0, 1, 2, 3, 4])
+.padding(0.05);
+
+// Kleurenschaal (Logaritmisch is vaak beter bij grote uitschieters zoals jouw 1 miljoen)
+const myColor = d3.scaleSequential()
+.interpolator(d3.interpolateInferno)
+.domain([d3.min(data, d => d.value), d3.max(data, d => d.value)]);
+
+// 4. Teken de blokjes
+svg.selectAll()
+.data(data)
+.enter()
+.append("rect")
+.attr("class", "heatmap-vakje")
+.attr("x", d => x(d.col))
+.attr("y", d => y(d.row))
+.attr("width", x.bandwidth())
+.attr("height", y.bandwidth())
+.style("fill", d => myColor(d.value))
+.style("stroke-width", 4)
+.style("stroke", "none")
+.style("opacity", 0.8)
+.append("title") // Tooltip bij hover
+.text(d => `Waarde: ${d.value.toLocaleString()}`);
+
+// Optioneel: Labels toevoegen
+svg.selectAll()
+.data(data)
+.enter()
+.append("text")
+.attr("x", d => x(d.col) + x.bandwidth()/2)
+.attr("y", d => y(d.row) + y.bandwidth()/2)
+.attr("dy", ".35em")
+.attr("text-anchor", "middle")
+.style("fill", d => d.value > 500000 ? "black" : "white")
+.style("font-size", "10px")
+.text(d => Math.round(d.value / 1000) + "k");
