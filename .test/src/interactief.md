@@ -8,6 +8,44 @@ title: interactief horizontaal
 
 
 ```js
+const launches = FileAttachment("data/launches.csv").csv({typed: true});
+const workbook = await FileAttachment("data/AHM 2024 YNG_NL.xlsx").xlsx();
+const dataDetail = workbook.sheet(4, {headers: true});
+const schoneDataDetail = dataDetail.map(d => ({
+  id: d["#"],
+  niveau1: d["Detail mismatch onderwijsniveau"],
+  niveau2: d["Detail mismatch onderwijsniveau_"],
+  niveau3: d["Detail mismatch onderwijsniveau__"],
+  niveau4: d["Detail mismatch onderwijsniveau___"],
+  niveau5: d["Detail mismatch onderwijsniveau____"],
+  niveau6: d["Detail mismatch onderwijsniveau_____"],
+  niveau7: d["Detail mismatch onderwijsniveau______"],
+  niveau8: d["Detail mismatch onderwijsniveau_______"],
+  niveau9: d["Detail mismatch onderwijsniveau________"],
+  niveau10: d["Detail mismatch onderwijsniveau_________"],
+  niveau11: d["Detail mismatch onderwijsniveau__________"],
+  niveau12: d["Detail mismatch onderwijsniveau___________"],
+  niveau13: d["Detail mismatch onderwijsniveau____________"],
+  niveau14: d["Detail mismatch onderwijsniveau_____________"]
+}));
+
+const labels1 = new Map();
+{
+  labels1.set(0, "Onderwijsniveau komt overeen met wat nodig is voor mijn job");
+  labels1.set(1, "Onderwijsniveau is hoger dan wat nodig is voor mijn job");
+  labels1.set(2, "Onderwijsniveau is lager dan wat nodig is voor mijn job");
+}
+
+const dataM = [0,0,0];
+dataM[0] = schoneDataDetail[5].niveau4;
+dataM[1] = schoneDataDetail[6].niveau4;
+dataM[2] = schoneDataDetail[7].niveau4;
+const dataV = [0,0,0];
+dataV[0] = schoneDataDetail[5].niveau7;
+dataV[1] = schoneDataDetail[6].niveau7;
+dataV[2] = schoneDataDetail[7].niveau7;
+
+
 // 1. Data generator
 function getRandomDataset(size = 5) {
   return Array.from({length: size}, () => 5 + Math.floor(Math.random() * 20));
@@ -104,13 +142,20 @@ btn2.addEventListener("click", () => {
 </div>
 
 ```js
+const labels1 = new Map();
+{
+  labels1.set(0, "Onderwijsniveau komt overeen met wat nodig is voor mijn job");
+  labels1.set(1, "Onderwijsniveau is hoger dan wat nodig is voor mijn job");
+  labels1.set(2, "Onderwijsniveau is lager dan wat nodig is voor mijn job");
+}
+
 const gestapeldeDataGeslacht = [
-    { groep: "Man", categorie: labels1.get(0), waarde: Number(data1[0]) },
-    { groep: "Man", categorie: labels1.get(1), waarde: Number(data1[1]) },
-    { groep: "Man", categorie: labels1.get(2), waarde: Number(data1[2]) },
-    { groep: "Vrouw", categorie: labels1.get(0), waarde: Number(data2[0]) },
-    { groep: "Vrouw", categorie: labels1.get(1), waarde: Number(data2[1]) },
-    { groep: "Vrouw", categorie: labels1.get(2), waarde: Number(data2[2]) }
+    { groep: "Man", categorie: labels1.get(0), waarde: Number(dataM[0]) },
+    { groep: "Man", categorie: labels1.get(1), waarde: Number(dataM[1]) },
+    { groep: "Man", categorie: labels1.get(2), waarde: Number(dataM[2]) },
+    { groep: "Vrouw", categorie: labels1.get(0), waarde: Number(dataV[0]) },
+    { groep: "Vrouw", categorie: labels1.get(1), waarde: Number(dataV[1]) },
+    { groep: "Vrouw", categorie: labels1.get(2), waarde: Number(dataV[2]) }
 ];
 
 // 3. SVG aanmaken
@@ -120,7 +165,6 @@ const svg2 = d3.create("svg")
     .attr("viewBox", [0, 0, width, height])
     .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 
-// 4. Scales OMDRAAIEN
 // X is nu de waarde (lengte van de balk)
 let xScale = d3.scaleLinear()                
     .domain([0, 100])
@@ -135,25 +179,30 @@ let yScale = d3.scaleBand()
 let cScale = d3.scaleSequential(d3.interpolateGreens)
     .domain([0, 100]);
 
+let isMan = true;
+let groepnu = isMan ? "Man":"Vrouw";
+
 // 5. Teken de bars (Horizontaal)
 svg2.append("g")
   .selectAll("rect")
-  .data(data)
+  .data(gestapeldeDataGeslacht)
   .join("rect")
-    .attr("x", padding.left)               
+    .filter(d => d.groep === groepnu)
+    .attr("x", d => padding.left)               
     .attr("y", (d, i) => yScale(i))
-    .attr("width", d => xScale(d) - padding.left)            
+    .attr("width", d => xScale(d.waarde) - padding.left)            
     .attr("height", yScale.bandwidth())
-    .attr("fill", d => cScale(d));
+    .attr("fill", d => cScale(d.waarde));
 
 // 6. Voeg labels toe
 svg2.append("g")
     .attr("class", "labels")
   .selectAll("text")
-  .data(data)
+  .data(gestapeldeDataGeslacht)
   .join("text")
-    .text(d => d)                                     
-    .attr("x", d => xScale(d) - 5) // Label aan het einde van de bar
+    .filter(d => d.groep === groepnu)
+    .text(d => d.waarde)                                     
+    .attr("x", d => xScale(d.waarde) - 5) // Label aan het einde van de bar
     .attr("y", (d, i) => yScale(i) + yScale.bandwidth() / 2)
     .attr("dy", "0.35em")
     .attr("text-anchor", "end")
@@ -161,24 +210,25 @@ svg2.append("g")
 
 // 7. Update functie
 function updateData() {
-  isData1 = !isData1;
-  data = isData1 ? data1:data2;
+  isMan = !isMan;
+  groepnu = isMan ? "Man":"Vrouw";
+  const data0 = gestapeldeDataGeslacht.filter(d => d.groep === groepnu);
 
   svg2.selectAll("rect")
-    .data(data)
+    .data(data0)
     .transition()
     .duration(750)
     .delay((d, i) => i * 20)
-    .attr("width", d => xScale(d) - padding.left)
-    .attr("fill", d => cScale(d));
+    .attr("width", d => xScale(d.waarde) - padding.left)
+    .attr("fill", d => cScale(d.waarde));
 
   svg2.selectAll(".labels text")
-    .data(data)
+    .data(data0)
     .transition()
     .duration(750)
     .delay((d, i) => i * 20)
-    .text(d => d)
-    .attr("x", d => xScale(d) - 5);
+    .text(d => d.waarde)
+    .attr("x", d => xScale(d.waarde) - 5);
 }
 
 // 8. Koppel de knop
@@ -191,6 +241,8 @@ btn3.addEventListener("click", () => {
 ```
 
 <div class="card">
-  <div id="button-area">${btn3}</div>
-  <div id="chart">${svg2.node()}</div>
+  <div id="button-area2">${btn3}</div>
+  <div id="chart2">${svg2.node()}</div>
 </div>
+
+<div id="test">

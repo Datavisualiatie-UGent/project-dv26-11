@@ -137,7 +137,7 @@ const btn = Inputs.button("Wissel Geslacht");
 let isMan = true;
 
 // 3. De container waar de grafiek in komt
-const chartContainer = html`<div style="width: 100%; height: 100px;"></div>`;
+const chartContainer = html`<div id="chartContainer"; style="width: 100%; height: 100px;"></div>`;
 
 // 4. De functie die de grafiek tekent OF updatet
 function updateChart() {
@@ -178,16 +178,73 @@ btn.addEventListener("click", () => {
 
 // 6. Eerste keer tekenen als de pagina laadt
 setTimeout(updateChart, 50);
+
+const padding = {top: 20, left: 50, right: 40, bottom: 20}; 
+const width = 600; // Iets breder voor horizontale bars
+const height = 500; 
+
+let cScale = d3.scaleSequential(d3.interpolateGreens)
+    .domain([0, 100]);
+
+let xScale = d3.scaleLinear()                
+    .domain([0, 100])
+    .range([padding.left, width - padding.right]);
+
+// Y is nu de categorie (positie van de balk)
+let yScale = d3.scaleBand() 
+    .domain(d3.range(data.length))  
+    .rangeRound([padding.top, height - padding.bottom])     
+    .paddingInner(0.1);        
+
+const testmap = new Map();
+{
+    testmap.set(labels1.get(0),0);
+    testmap.set(labels1.get(1),1);
+    testmap.set(labels1.get(2),2);
+};
+
+function updateData() {
+  isMan = !isMan
+  const Newdata = isMan ? gestapeldeDataM : gestapeldeDataV;
+
+  d3.select("#test")
+    .append("text").text(isMan);
+  
+  d3.select("#chartContainer").selectAll("rect")
+    .data(Newdata)
+    .transition()
+    .duration(750)
+    .delay((d, i) => i * 20)
+    .attr("width", d => Newdata[testmap.get(d.categorie)].waarde/100 * (chartContainer.clientWidth || 600) )
+    .attr("x", d=> d.waarde + Newdata[testmap.get(d.categorie)].waarde);
+
+}
+
+const btn3 = Inputs.button("Wissel data");
+
+btn3.addEventListener("click", () => {
+
+  updateData();  
+});
+
 ```
 <div class="card">
   <h3>Bediening</h3>
   <p style="font-size: 0.85rem; color: #666;">Klik om te wisselen:</p>
   <div>
     ${btn} </div>
+    ${btn3}
 </div>
 
 <div class="card grid-colspan-3">
   <h2>Overeenkomst Job-Onderwijs</h2>
   ${chartContainer} 
+
+</div>
+
+<div class="card grid-colspan-3">
+  <div id="test">
+  testetetetstte
+  </div>
 
 </div>

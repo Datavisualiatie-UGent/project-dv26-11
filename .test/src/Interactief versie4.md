@@ -9,7 +9,6 @@ toc: false
 <!-- Load and transform the data -->
 
 ```js
-const launches = FileAttachment("data/launches.csv").csv({typed: true});
 const workbook = await FileAttachment("data/AHM 2024 YNG_NL.xlsx").xlsx();
 const data = workbook.sheet(3, {headers: true});
 const schoneData = data.map(d => ({
