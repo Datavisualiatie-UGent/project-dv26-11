@@ -10,6 +10,23 @@ toc: false
 
 ```js
 const launches = FileAttachment("data/launches.csv").csv({typed: true});
+const workbook = await FileAttachment("data/AHM 2024 YNG_NL.xlsx").xlsx();
+const data = workbook.sheet(3, {headers: true});
+const diplomaJobData = data.map(d => ({
+  id: d["#"],
+  niveau1: d["Link diploma - job"],
+  niveau2: d["Link diploma - job_"],
+  niveau3: d["Link diploma - job__"],
+  niveau4: d["Link diploma - job___"],
+  niveau5: d["Link diploma - job____"],
+  niveau6: d["Link diploma - job_____"],
+  niveau7: d["Link diploma - job______"],
+  niveau8: d["Link diploma - job_______"],
+  niveau9: d["Link diploma - job________"],
+  niveau10: d["Link diploma - job_________"],
+  niveau11: d["Link diploma - job__________"]
+}));
+
 ```
 
 <!-- A shared color scale for consistency, sorted by the number of launches -->
@@ -19,6 +36,13 @@ const color = Plot.scale({
   color: {
     type: "categorical",
     domain: d3.groupSort(launches, (D) => -D.length, (d) => d.state).filter((d) => d !== "Other"),
+    unknown: "var(--theme-foreground-muted)"
+  }
+});
+const color = Plot.scale({
+  color: {
+    type: "categorical",
+    domain: d3.groupSort(diplomaJobData, (D) => -D.length, (d) => d.state).filter((d) => d !== "Other"),
     unknown: "var(--theme-foreground-muted)"
   }
 });

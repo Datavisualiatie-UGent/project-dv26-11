@@ -1,110 +1,196 @@
 ---
 theme: dashboard
-title: Interactief
-toc: false
+title: interactief horizontaal
 ---
 
-# Interactief; 
+# Interactieve Horizontale Grafiek
 
-Hieronder zie je de heatmap op basis van de array data.
 
 
 ```js
-
-
-const workbook = await FileAttachment("data/AHM 2024 YNG_NL.xlsx").xlsx();
-const data = workbook.sheet(3, {headers: true});
-
-const schoneData = data.map(d => ({
-  id: d["#"],
-  niveau1: d["Link diploma - job"],
-  niveau2: d["Link diploma - job_"],
-  niveau3: d["Link diploma - job__"],
-  niveau4: d["Link diploma - job___"],
-  niveau5: d["Link diploma - job____"],
-  niveau6: d["Link diploma - job_____"],
-  niveau7: d["Link diploma - job______"],
-  niveau8: d["Link diploma - job_______"],
-  niveau9: d["Link diploma - job________"],
-  niveau10: d["Link diploma - job_________"],
-  niveau11: d["Link diploma - job__________"]
-}));
-
-const data1 = [0,0,0];
-data1[0] = schoneData[3].niveau4;
-data1[1] = schoneData[4].niveau4;
-data1[2] = schoneData[5].niveau4;
-
-const labels1 = new Map();
-{
-  labels1.set(0, "Onderwijsniveau komt overeen met wat nodig is voor mijn job");
-  labels1.set(1, "Onderwijsniveau is hoger dan wat nodig is voor mijn job");
-  labels1.set(2, "Onderwijsniveau is lager dan wat nodig is voor mijn job");
+// 1. Data generator
+function getRandomDataset(size = 5) {
+  return Array.from({length: size}, () => 5 + Math.floor(Math.random() * 20));
 }
 
-const data1_0 = data1.map((row, i) => ({ 
-    rij: labels1.get(i), 
-    waarde: data1[i] 
-  })
-);
+// 2. Variabelen
+const data1 = [45,20,10,60,70];
+const data2 = [10,90,10,90,10];
+let data = data1;
+let isData1 = true;
+const width = 600; // Iets breder voor horizontale bars
+const height = 500; 
+const padding = {top: 20, left: 50, right: 40, bottom: 20}; 
 
+// 3. SVG aanmaken
+const svg = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
 
-const gestapeldeData = [
-  { groep: "Totaal", categorie: labels1.get(0), waarde: Number(schoneData[3].niveau4) },
-  { groep: "Totaal", categorie: labels1.get(1), waarde: Number(schoneData[4].niveau4) },
-  { groep: "Totaal", categorie: labels1.get(2), waarde: Number(schoneData[5].niveau4) }
+// 4. Scales OMDRAAIEN
+// X is nu de waarde (lengte van de balk)
+let xScale = d3.scaleLinear()                
+    .domain([0, 100])
+    .range([padding.left, width - padding.right]);
+
+// Y is nu de categorie (positie van de balk)
+let yScale = d3.scaleBand() 
+    .domain(d3.range(data.length))  
+    .rangeRound([padding.top, height - padding.bottom])     
+    .paddingInner(0.1);        
+
+let cScale = d3.scaleSequential(d3.interpolateGreens)
+    .domain([0, 100]);
+
+// 5. Teken de bars (Horizontaal)
+svg.append("g")
+  .selectAll("rect")
+  .data(data)
+  .join("rect")
+    .attr("x", padding.left)               
+    .attr("y", (d, i) => yScale(i))
+    .attr("width", d => xScale(d) - padding.left)            
+    .attr("height", yScale.bandwidth())
+    .attr("fill", d => cScale(d));
+
+// 6. Voeg labels toe
+svg.append("g")
+    .attr("class", "labels")
+  .selectAll("text")
+  .data(data)
+  .join("text")
+    .text(d => d)                                     
+    .attr("x", d => xScale(d) - 5) // Label aan het einde van de bar
+    .attr("y", (d, i) => yScale(i) + yScale.bandwidth() / 2)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "end")
+    .attr("fill", "white");
+
+// 7. Update functie
+function updateData() {
+  isData1 = !isData1;
+  data = isData1 ? data1:data2;
+
+  svg.selectAll("rect")
+    .data(data)
+    .transition()
+    .duration(750)
+    .delay((d, i) => i * 20)
+    .attr("width", d => xScale(d) - padding.left)
+    .attr("fill", d => cScale(d));
+
+  svg.selectAll(".labels text")
+    .data(data)
+    .transition()
+    .duration(750)
+    .delay((d, i) => i * 20)
+    .text(d => d)
+    .attr("x", d => xScale(d) - 5);
+}
+
+// 8. Koppel de knop
+const btn2 = Inputs.button("Wissel data");
+
+btn2.addEventListener("click", () => {
+  updateData();  
+});
+```
+
+<div class="card">
+  <div id="button-area">${btn2}</div>
+  <div id="chart">${svg.node()}</div>
+</div>
+
+```js
+const gestapeldeDataGeslacht = [
+    { groep: "Man", categorie: labels1.get(0), waarde: Number(data1[0]) },
+    { groep: "Man", categorie: labels1.get(1), waarde: Number(data1[1]) },
+    { groep: "Man", categorie: labels1.get(2), waarde: Number(data1[2]) },
+    { groep: "Vrouw", categorie: labels1.get(0), waarde: Number(data2[0]) },
+    { groep: "Vrouw", categorie: labels1.get(1), waarde: Number(data2[1]) },
+    { groep: "Vrouw", categorie: labels1.get(2), waarde: Number(data2[2]) }
 ];
+
+// 3. SVG aanmaken
+const svg2 = d3.create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+
+// 4. Scales OMDRAAIEN
+// X is nu de waarde (lengte van de balk)
+let xScale = d3.scaleLinear()                
+    .domain([0, 100])
+    .range([padding.left, width - padding.right]);
+
+// Y is nu de categorie (positie van de balk)
+let yScale = d3.scaleBand() 
+    .domain(d3.range(data.length))  
+    .rangeRound([padding.top, height - padding.bottom])     
+    .paddingInner(0.1);        
+
+let cScale = d3.scaleSequential(d3.interpolateGreens)
+    .domain([0, 100]);
+
+// 5. Teken de bars (Horizontaal)
+svg2.append("g")
+  .selectAll("rect")
+  .data(data)
+  .join("rect")
+    .attr("x", padding.left)               
+    .attr("y", (d, i) => yScale(i))
+    .attr("width", d => xScale(d) - padding.left)            
+    .attr("height", yScale.bandwidth())
+    .attr("fill", d => cScale(d));
+
+// 6. Voeg labels toe
+svg2.append("g")
+    .attr("class", "labels")
+  .selectAll("text")
+  .data(data)
+  .join("text")
+    .text(d => d)                                     
+    .attr("x", d => xScale(d) - 5) // Label aan het einde van de bar
+    .attr("y", (d, i) => yScale(i) + yScale.bandwidth() / 2)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "end")
+    .attr("fill", "white");
+
+// 7. Update functie
+function updateData() {
+  isData1 = !isData1;
+  data = isData1 ? data1:data2;
+
+  svg2.selectAll("rect")
+    .data(data)
+    .transition()
+    .duration(750)
+    .delay((d, i) => i * 20)
+    .attr("width", d => xScale(d) - padding.left)
+    .attr("fill", d => cScale(d));
+
+  svg2.selectAll(".labels text")
+    .data(data)
+    .transition()
+    .duration(750)
+    .delay((d, i) => i * 20)
+    .text(d => d)
+    .attr("x", d => xScale(d) - 5);
+}
+
+// 8. Koppel de knop
+const btn3 = Inputs.button("Wissel data");
+
+btn3.addEventListener("click", () => {
+  updateData();  
+});
 
 ```
 
-<div class="grid grid-cols-1">
-  <div class="card">
-  <h1> Overeenkomst Job-Onderwijs 
-    ${Plot.plot({
-        marginLeft: 300,
-        x:{
-            grid: true,
-            label: "Waarde"
-        },
-        y: {
-            grid: true,
-            label: "Groep"
-        },
-        marks: [
-            Plot.barX(data1_0, {x: "waarde", y: "rij",fill:"blue"}),
-            Plot.ruleX([0])
-        ]
-    })}
-  </div>
+<div class="card">
+  <div id="button-area">${btn3}</div>
+  <div id="chart">${svg2.node()}</div>
 </div>
-
-<div class="grid grid-cols-1">
-  <div class="card">
-  <h1> Overeenkomst Job-Onderwijs 
-    ${Plot.plot({
-        marginLeft:50,
-        width:750,
-        x: {
-            label: "waarde"
-        },
-        color: {
-            //scheme: "Magma",
-            legend: true,
-            label: "Waarde",
-            marginLeft:20,
-            width:1000
-      },
-        marks: [
-            Plot.ruleX([0, 1]),
-            Plot.barX(gestapeldeData, Plot.stackX({ x: "waarde", fill: "categorie", insetLeft: 1})),
-            //Plot.textX(alphabet, Plot.stackX({order: "letter", x: "frequency", text: "letter", insetLeft: 1}))
-        ]
-    })}
-  </div>
-</div>
-
-
-
-
-
-
