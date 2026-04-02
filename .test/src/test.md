@@ -95,7 +95,46 @@ function makeplot(dataplot){
 
 const chart1 = makeplot(dataDR);
 
+const gestapeldeData = [
+    { groep: "Totaal", categorie: niveaus.get(0), waarde: Number(data[115].C) },
+    { groep: "Totaal", categorie: niveaus.get(1), waarde: Number(data[116].C) },
+    { groep: "Totaal", categorie: niveaus.get(2), waarde: Number(data[117].C) },
+    { groep: "Totaal", categorie: niveaus.get(3), waarde: Number(data[118].C) },
+    { groep: "Totaal", categorie: niveaus.get(4), waarde: Number(data[119].C) }
+];
+
 ```
+<div class="grid grid-cols-1">
+  <div class="card" style="max-width=1000px">
+  <h1 style="max-width=1000px"> Calculate 
+    ${Plot.plot({
+        marginLeft: 60,
+        width:1000,
+        x: { axis: "top", percent: true },
+        color: { scheme: "Magma", legend:true },
+        //y: {axis: null},
+        marks: [
+          Plot.barX(gestapeldeData, {
+            offset: "normalize",
+            y: "groep",
+            x: "waarde",
+            fill: "categorie",
+            sort: { color: null, y: { value: "-x", reduce: "first" } }
+          }),
+          Plot.text(gestapeldeData, {
+            offset: "normalize",
+            y: "groep",
+            x: d => (d.waarde),
+            text: d => d.waarde > 0.05 ? ((d.waarde)*100).toFixed(1) + "%" : ((d.waarde)*100).toFixed(0) + "%" ,
+            fill: d => d.waarde > 0.3 ? "black" : "white"
+          }
+          )
+        ]
+      })
+    }
+  </div>
+</div>
+
 
 <div class="grid grid-cols-1">
   <div class="card">

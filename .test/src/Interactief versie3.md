@@ -86,6 +86,69 @@ const dataGewest = [
   { groep: "Waals", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau10) }
 ];
 
+const dataNat = [
+  { groep: "Belgie", categorie: labels1[0], waarde: Number(schoneDataDetail[35].niveau4) },
+  { groep: "Belgie", categorie: labels1[1], waarde: Number(schoneDataDetail[36].niveau4) },
+  { groep: "Belgie", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau4) },
+  { groep: "EU27", categorie: labels1[0], waarde: Number(schoneDataDetail[35].niveau7) },
+  { groep: "EU27", categorie: labels1[1], waarde: Number(schoneDataDetail[36].niveau7) },
+  { groep: "EU27", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau7) },
+  { groep: "niet-EU27", categorie: labels1[0], waarde: Number(schoneDataDetail[35].niveau10) },
+  { groep: "niet-EU27", categorie: labels1[1], waarde: Number(schoneDataDetail[36].niveau10) },
+  { groep: "niet-EU27", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau10) }
+];
+
+const dataAMS = [
+  { groep: "IAB-werkloze", categorie: labels1[0], waarde: Number(schoneDataDetail[45].niveau4) },
+  { groep: "IAB-werkloze", categorie: labels1[1], waarde: Number(schoneDataDetail[46].niveau4) },
+  { groep: "IAB-werkloze", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau4) },
+  { groep: "Werkende IAB-actieve", categorie: labels1[0], waarde: Number(schoneDataDetail[45].niveau7) },
+  { groep: "Werkende IAB-actieve", categorie: labels1[1], waarde: Number(schoneDataDetail[46].niveau7) },
+  { groep: "Werkende IAB-actieve", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau7) },
+  { groep: "IAB-niet-beroepsactieve", categorie: labels1[0], waarde: Number(schoneDataDetail[45].niveau10) },
+  { groep: "IAB-niet-beroepsactieve", categorie: labels1[1], waarde: Number(schoneDataDetail[46].niveau10) },
+  { groep: "IAB-niet-beroepsactieve", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau10) }
+];
+
+const dataVastTijdelijk = [
+  { groep: "Vast", categorie: labels1[0], waarde: Number(schoneDataDetail[55].niveau4) },
+  { groep: "Vast", categorie: labels1[1], waarde: Number(schoneDataDetail[56].niveau4) },
+  { groep: "Vast", categorie: labels1[2], waarde: Number(schoneDataDetail[57].niveau4) },
+  { groep: "Tijdelijk", categorie: labels1[0], waarde: Number(schoneDataDetail[55].niveau7) },
+  { groep: "Tijdelijk", categorie: labels1[1], waarde: Number(schoneDataDetail[56].niveau7) },
+  { groep: "Tijdelijk", categorie: labels1[2], waarde: Number(schoneDataDetail[57].niveau7) }
+];
+
+const dataAantalJarenWerk = [
+  { groep: "0 tot 1 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau4) },
+  { groep: "0 tot 1 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau4) },
+  { groep: "0 tot 1 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau4) },
+  { groep: "Meer dan 1 tot 2 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau7) },
+  { groep: "Meer dan 1 tot 2 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau7) },
+  { groep: "Meer dan 1 tot 2 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau7) },
+  { groep: "Meer dan 2 tot 5 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau10) },
+  { groep: "Meer dan 2 tot 5 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau10) },
+  { groep: "Meer dan 2 tot 5 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau10) },
+  { groep: "Meer dan 5 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau13) },
+  { groep: "Meer dan 5 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau13) },
+  { groep: "Meer dan 5 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau13) }
+];
+
+const databeroepsgroep = [
+  { groep: "Groep1", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau4) },
+  { groep: "Groep1", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau4) },
+  { groep: "Groep1", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau4) },
+  { groep: "Groep2", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau7) },
+  { groep: "Groep2", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau7) },
+  { groep: "Groep2", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau7) },
+  { groep: "Groep3", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau10) },
+  { groep: "Groep3", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau10) },
+  { groep: "Groep3", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau10) },
+  { groep: "Groep4", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau13) },
+  { groep: "Groep4", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau13) },
+  { groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) }
+];
+
 // --- 2. DE REBRUIKBARE CHART FUNCTIE ---
 function createStackedChart(data, initialGroup) {
   const width = 928;
@@ -147,7 +210,7 @@ function createStackedChart(data, initialGroup) {
         .attr("y", d => y(d.data[0]) + y.bandwidth() / 2)
         .attr("dy", "0.35em")
         .attr("text-anchor", "middle")
-        .attr("fill", d => (d[1] - d[0] > 0.4) ? "white" : "black") // Dynamische kleur voor leesbaarheid
+        .attr("fill", d => (d[1] - d[0] > 0.45) ? "white" : "black") // Dynamische kleur voor leesbaarheid
         .text(d => {
           const pct = (d[1] - d[0]);
           return pct > 0.05 ? (pct * 100).toFixed(1) + "%" : (pct * 100).toFixed(0) + "%"; // Verberg als < 5%
@@ -186,6 +249,11 @@ const chart0 = createStackedChart(dataTotaal, "Totaal");
 const chart1 = createStackedChart(dataGeslacht, "Man");
 const chart2 = createStackedChart(dataNiveau, "Middengeschoold");
 const chart3 = createStackedChart(dataGewest, "Vlaams");
+const chart4 = createStackedChart(dataNat, "Belgie");
+const chart5 = createStackedChart(dataAMS, "Werkende IAB-actieve");
+const chart6 = createStackedChart(dataVastTijdelijk, "Vast");
+const chart7 = createStackedChart(dataAantalJarenWerk, "0 tot 1 jaar");
+const chart8 = createStackedChart(databeroepsgroep, "Groep1")
 
 // Inputs koppelen met 'input' event
 const select1 = Inputs.select(["Man", "Vrouw"], {label: "Geslacht:"});
@@ -196,6 +264,21 @@ select2.addEventListener("input", () => chart2.update(select2.value));
 
 const select3 = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
 select3.addEventListener("input", () => chart3.update(select3.value));
+
+const select4 = Inputs.select(["Belgie", "EU27", "niet-EU27"], {label: "Herkomst nationaliteit:"});
+select4.addEventListener("input", () => chart4.update(select4.value));
+
+const select5 = Inputs.select(["IAB-werkloze", "Werkende IAB-actieve", "IAB-niet-beroepsactieve"], {label: "Arbeidsmarktstatuut :"});
+select5.addEventListener("input", () => chart5.update(select5.value));
+
+const select6 = Inputs.select(["Vast", "Tijdelijk"], {label: "Vast/Tijdelijk contract:"});
+select6.addEventListener("input", () => chart6.update(select6.value));
+
+const select7 = Inputs.select(["0 tot 1 jaar", "Meer dan 1 tot 2 jaar", "Meer dan 2 tot 5 jaar", "Meer dan 5 jaar"], {label: "Aantal jaar aan het werk:"});
+select7.addEventListener("input", () => chart7.update(select7.value));
+
+const select8 = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4"], {label: "Beroepsgroep:"});
+select8.addEventListener("input", () => chart8.update(select8.value));
 ```
 
 <div class="grid grid-cols-4">
@@ -243,6 +326,62 @@ select3.addEventListener("input", () => chart3.update(select3.value));
   </div>
   <div id="chart", style="margin-top: 10px;">
     ${chart3.node}
+
+  </div>
+</div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select4}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart4.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select5}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart5.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select6}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart6.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select7}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart7.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select8}
+
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    <p> Groep 1: Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen, </p>
+    <p>Groep 2: Administratief personeel; Dienstverlenend personeel en verkopers, </p>
+    <p>Groep 3: Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs,</p>
+    <p>Groep 4: Elementaire beroepen.</p>
+    ${chart8.node}
 
   </div>
 </div>
