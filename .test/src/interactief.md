@@ -261,7 +261,7 @@ const gestapeldeDataNiveau = [
     { groep: "Hooggeschoold", categorie: labels1.get(2), waarde: Number(schoneDataDetail[17].niveau10) }
 ];
 
-const data0NO = gestapeldeDataNiveau.filter(d => d.groep === "Laaggeschoold");
+const data0NO = gestapeldeDataNiveau.filter(d => d.groep === "Middengeschoold");
 
 const seriesNO = d3.stack()
     .keys(d3.union(data0NO.map(d => d.categorie))) // distinct series keys, in input order

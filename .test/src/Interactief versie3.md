@@ -6,26 +6,10 @@ toc: false
 
 # Interactief Versie 3
 
-<!-- Load and transform the data -->
-
 ```js
-const launches = FileAttachment("data/launches.csv").csv({typed: true});
+
+// --- 1. DATA VOORBEREIDING ---
 const workbook = await FileAttachment("data/AHM 2024 YNG_NL.xlsx").xlsx();
-const data = workbook.sheet(3, {headers: true});
-const schoneData = data.map(d => ({
-  id: d["#"],
-  niveau1: d["Link diploma - job"],
-  niveau2: d["Link diploma - job_"],
-  niveau3: d["Link diploma - job__"],
-  niveau4: d["Link diploma - job___"],
-  niveau5: d["Link diploma - job____"],
-  niveau6: d["Link diploma - job_____"],
-  niveau7: d["Link diploma - job______"],
-  niveau8: d["Link diploma - job_______"],
-  niveau9: d["Link diploma - job________"],
-  niveau10: d["Link diploma - job_________"],
-  niveau11: d["Link diploma - job__________"]
-}));
 const dataDetail = workbook.sheet(4, {headers: true});
 const schoneDataDetail = dataDetail.map(d => ({
   id: d["#"],
@@ -45,206 +29,128 @@ const schoneDataDetail = dataDetail.map(d => ({
   niveau14: d["Detail mismatch onderwijsniveau_____________"]
 }));
 
-const labels1 = new Map();
-{
-  labels1.set(0, "Onderwijsniveau komt overeen met wat nodig is voor mijn job");
-  labels1.set(1, "Onderwijsniveau is hoger dan wat nodig is voor mijn job");
-  labels1.set(2, "Onderwijsniveau is lager dan wat nodig is voor mijn job");
-}
+const labels1 = ["Onderwijsniveau komt overeen met wat nodig is voor mijn job", "Onderwijsniveau is hoger dan wat nodig is voor mijn job", "Onderwijsniveau is lager dan wat nodig is voor mijn job"]; // Kortere keys voor gemak
 
-const data1 = [0,0,0];
-data1[0] = schoneData[3].niveau4;
-data1[1] = schoneData[4].niveau4;
-data1[2] = schoneData[5].niveau4;
-
-const dataM = [0,0,0];
-dataM[0] = schoneDataDetail[5].niveau4;
-dataM[1] = schoneDataDetail[6].niveau4;
-dataM[2] = schoneDataDetail[7].niveau4;
-const dataV = [0,0,0];
-dataV[0] = schoneDataDetail[5].niveau7;
-dataV[1] = schoneDataDetail[6].niveau7;
-dataV[2] = schoneDataDetail[7].niveau7;
-
-```
-
-
-<!-- Cards with big numbers -->
-
-<div class="grid grid-cols-4">
-  <div class="card">
-    <h2>Totaal</h2>
-    <span class="big">${schoneDataDetail[5].niveau3 + schoneDataDetail[5].niveau6}</span>
-  </div>
-</div>
-
-<!-- Plot of launch history -->
-
-```js
-const gestapeldeData = [
-  { groep: "Totaal", categorie: labels1.get(0), waarde: Number(data1[0]) },
-  { groep: "Totaal", categorie: labels1.get(1), waarde: Number(data1[1]) },
-  { groep: "Totaal", categorie: labels1.get(2), waarde: Number(data1[2]) }
+const dataGeslacht = [
+  { groep: "Man", categorie: labels1[0], waarde: Number(schoneDataDetail[5].niveau4) },
+  { groep: "Man", categorie: labels1[1], waarde: Number(schoneDataDetail[6].niveau4) },
+  { groep: "Man", categorie: labels1[2], waarde: Number(schoneDataDetail[7].niveau4) },
+  { groep: "Vrouw", categorie: labels1[0], waarde: Number(schoneDataDetail[5].niveau7) },
+  { groep: "Vrouw", categorie: labels1[1], waarde: Number(schoneDataDetail[6].niveau7) },
+  { groep: "Vrouw", categorie: labels1[2], waarde: Number(schoneDataDetail[7].niveau7) }
 ];
 
-function launchTimeline() {
-  return Plot.plot({
-        marginLeft: 10,
-        height: 60,
-        x: { domain: [0, 100], axis: null }, // Geen as voor een compactere look
-        color: { legend: true},
-        marks: [
-          Plot.barX(gestapeldeData, Plot.stackX({ x: "waarde", fill: "categorie", inset: 0.5 })),
-          Plot.textX(gestapeldeData, Plot.stackX({ x: "waarde", text: d => `${d.waarde}%`, fill: "white", fontSize: 12, fontWeight: "bold" }))
-        ]
-      });
-}
-```
-
-<div class="grid grid-cols-1">
-  <div class="card">
-    ${resize((width) => launchTimeline())}
-
-  </div>
-</div>
-
-<!-- interactieknoppen -->
-
-```js
-
-const gestapeldeDataM = [
-    { groep: "Geslacht", categorie: labels1.get(0), waarde: Number(dataM[0]) },
-    { groep: "Geslacht", categorie: labels1.get(1), waarde: Number(dataM[1]) },
-    { groep: "Geslacht", categorie: labels1.get(2), waarde: Number(dataM[2]) }
+const dataNiveau = [
+  { groep: "Laaggeschoold", categorie: labels1[0], waarde: Number(schoneDataDetail[15].niveau4) },
+  { groep: "Laaggeschoold", categorie: labels1[1], waarde: Number(schoneDataDetail[16].niveau4) },
+  { groep: "Laaggeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau4) },
+  { groep: "Middengeschoold", categorie: labels1[0], waarde: Number(schoneDataDetail[15].niveau7) },
+  { groep: "Middengeschoold", categorie: labels1[1], waarde: Number(schoneDataDetail[16].niveau7) },
+  { groep: "Middengeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau7) },
+  { groep: "Hooggeschoold", categorie: labels1[0], waarde: Number(schoneDataDetail[15].niveau10) },
+  { groep: "Hooggeschoold", categorie: labels1[1], waarde: Number(schoneDataDetail[16].niveau10) },
+  { groep: "Hooggeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau10) }
 ];
 
-const gestapeldeDataV = [
-    { groep: "Geslacht", categorie: labels1.get(0), waarde: Number(dataV[0]) },
-    { groep: "Geslacht", categorie: labels1.get(1), waarde: Number(dataV[1]) },
-    { groep: "Geslacht", categorie: labels1.get(2), waarde: Number(dataV[2]) }
-];
+// --- 2. DE REBRUIKBARE CHART FUNCTIE ---
+function createStackedChart(data, initialGroup) {
+  const width = 928;
+  const height = 100;
+  const margin = {top: 30, right: 20, bottom: 0, left: 100};
 
-const genderMap = new Map();
-{
-    genderMap.set(0,gestapeldeDataM);
-    genderMap.set(1,gestapeldeDataV);
-};
+  const color = d3.scaleOrdinal()
+    .domain(labels1)
+    .range(d3.schemeRdYlBu[3]);
 
-// 1. De Knop (zonder view(), we handelen de klik zelf af)
-const btn = Inputs.button("Wissel Geslacht");
+  const x = d3.scaleLinear().range([margin.left, width - margin.right]);
+  const y = d3.scaleBand().range([margin.top, height - margin.bottom]).padding(0.1);
 
-// 2. Een 'Mutable' of variabele om de huidige staat bij te houden
-let isMan = true;
+  const svg = d3.create("svg").attr("viewBox", [0, 0, width, height]);
 
-// 3. De container waar de grafiek in komt
-const chartContainer = html`<div id="chartContainer"; style="width: 100%; height: 100px;"></div>`;
-
-// 4. De functie die de grafiek tekent OF updatet
-function updateChart() {
-  const currentData = isMan ? gestapeldeDataM : gestapeldeDataV;
-  const currentScheme = isMan ? "pubugn" : "purd";
-
-  const newPlot = Plot.plot({
-    width: chartContainer.clientWidth || 600,
-    marginLeft: 10,
-    height: 80,
-    x: { domain: [0, 100] },
-    color: { scheme: currentScheme, domain: Array.from(labels1.values()) },
-    marks: [
-      Plot.barX(currentData, Plot.stackX({
-        x: "waarde",
-        fill: "categorie",
-        key: "categorie",
-        transition: {duration: 800, easing: "cubic-in-out"}
-      })),
-      Plot.textX(currentData, Plot.stackX({
-        x: "waarde",
-        text: d => `${d.waarde}%`,
-        key: "categorie",
-        transition: {duration: 800 }
-      }))
-    ]
-  });
-
-  // Vervang de oude grafiek door de nieuwe in de container
-  chartContainer.replaceChildren(newPlot);
-}
-
-// 5. Luister naar de knop
-btn.addEventListener("click", () => {
-  isMan = !isMan; // Wissel de staat
-  updateChart();  // Voer de update uit
-});
-
-// 6. Eerste keer tekenen als de pagina laadt
-setTimeout(updateChart, 50);
-
-const padding = {top: 20, left: 50, right: 40, bottom: 20}; 
-const width = 600; // Iets breder voor horizontale bars
-const height = 500; 
-
-let cScale = d3.scaleSequential(d3.interpolateGreens)
-    .domain([0, 100]);
-
-let xScale = d3.scaleLinear()                
-    .domain([0, 100])
-    .range([padding.left, width - padding.right]);
-
-// Y is nu de categorie (positie van de balk)
-let yScale = d3.scaleBand() 
-    .domain(d3.range(data.length))  
-    .rangeRound([padding.top, height - padding.bottom])     
-    .paddingInner(0.1);        
-
-const testmap = new Map();
-{
-    testmap.set(labels1.get(0),0);
-    testmap.set(labels1.get(1),1);
-    testmap.set(labels1.get(2),2);
-};
-
-function updateData() {
-  isMan = !isMan
-  const Newdata = isMan ? gestapeldeDataM : gestapeldeDataV;
-
-  d3.select("#test")
-    .append("text").text(isMan);
+  // Containers voor onderdelen
+  const layerGroup = svg.append("g").attr("class", "layers");
+  const labelGroup = svg.append("g").attr("class", "labels");
+  const yAxisGroup = svg.append("g").attr("class", "y-axis").attr("transform", `translate(${margin.left},0)`);
   
-  d3.select("#chartContainer").selectAll("rect")
-    .data(Newdata)
-    .transition()
-    .duration(750)
-    .delay((d, i) => i * 20)
-    .attr("width", d => Newdata[testmap.get(d.categorie)].waarde/100 * (chartContainer.clientWidth || 600) )
-    .attr("x", d=> d.waarde + Newdata[testmap.get(d.categorie)].waarde);
+  svg.append("g")
+    .attr("transform", `translate(0,${margin.top})`)
+    .call(d3.axisTop(x).ticks(10, "%"))
+    .call(g => g.selectAll(".domain").remove());
 
+  // De eigenlijke update logica
+  function update(selectedGroup) {
+    const filtered = data.filter(d => d.groep === selectedGroup);
+    const series = d3.stack()
+      .keys(labels1)
+      .value(([, D], key) => D.get(key).waarde)
+      .offset(d3.stackOffsetExpand)
+      (d3.index(filtered, d => d.groep, d => d.categorie));
+
+    y.domain([selectedGroup]);
+    yAxisGroup.transition().duration(750).call(d3.axisLeft(y).tickSizeOuter(0));
+
+    // Balken
+    layerGroup.selectAll("g")
+      .data(series)
+      .join("g")
+        .attr("fill", d => color(d.key))
+      .selectAll("rect")
+      .data(D => D.map(d => (d.key = D.key, d)))
+      .join("rect")
+        .transition().duration(750)
+        .attr("x", d => x(d[0]))
+        .attr("y", d => y(d.data[0]))
+        .attr("width", d => x(d[1]) - x(d[0]))
+        .attr("height", y.bandwidth());
+
+    // Slimme Labels
+    labelGroup.selectAll("text")
+      .data(series.flatMap(D => D.map(d => ({...d, key: D.key}))))
+      .join("text")
+        .transition().duration(750)
+        // Plaats in het midden van het segment
+        .attr("x", d => x(d[0]) + (x(d[1]) - x(d[0])) / 2)
+        .attr("y", d => y(d.data[0]) + y.bandwidth() / 2)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "middle")
+        .attr("fill", d => (d[1] - d[0] > 0.4) ? "white" : "black") // Dynamische kleur voor leesbaarheid
+        .text(d => {
+          const pct = (d[1] - d[0]);
+          return pct > 0.05 ? (pct * 100).toFixed(1) + "%" : (pct * 100).toFixed(0) + "%"; // Verberg als < 5%
+        });
+  }
+
+  update(initialGroup);
+  return { node: svg.node(), update, color };
 }
 
-const btn3 = Inputs.button("Wissel data");
+// --- 3. INITIALISATIE ---
+const chart1 = createStackedChart(dataGeslacht, "Man");
+const chart2 = createStackedChart(dataNiveau, "Middengeschoold");
 
-btn3.addEventListener("click", () => {
+// Inputs koppelen met 'input' event
+const select1 = Inputs.select(["Man", "Vrouw"], {label: "Geslacht:"});
+select1.addEventListener("input", () => chart1.update(select1.value));
 
-  updateData();  
-});
-
+const select2 = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold"], {label: "Niveau:"});
+select2.addEventListener("input", () => chart2.update(select2.value));
 ```
-<div class="card">
-  <h3>Bediening</h3>
-  <p style="font-size: 0.85rem; color: #666;">Klik om te wisselen:</p>
-  <div>
-    ${btn} </div>
-    ${btn3}
-</div>
 
-<div class="card grid-colspan-3">
-  <h2>Overeenkomst Job-Onderwijs</h2>
-  ${chartContainer} 
-
-</div>
-
-<div class="card grid-colspan-3">
-  <div id="test">
-  testetetetstte
+<div class="card" id="chart-container">
+  <div id="button-area">
+    ${select1}
   </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart1.node}
 
+  </div>
+</div>
+<div class="card" id="chart-container">
+  <div id="button-area">
+    ${select2}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart2.node}
+
+  </div>
 </div>
