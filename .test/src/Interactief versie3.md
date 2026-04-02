@@ -48,21 +48,18 @@ const schoneData = data.map(d => ({
 }));
 
 const dataTotaal = [
-  { groep: "Totaal", categorie: labels1[0], waarde: Number(schoneData[3].niveau4) },
+  { groep: "Totaal", categorie: labels1[0], waarde: Number(schoneData[3].niveau4)},
   { groep: "Totaal", categorie: labels1[1], waarde: Number(schoneData[4].niveau4) },
-  { groep: "Totaal", categorie: labels1[2], waarde: Number(schoneData[5].niveau4) }
-];
-
-const dataGeslacht = [
+  { groep: "Totaal", categorie: labels1[2], waarde: Number(schoneData[5].niveau4) },
   { groep: "Man", categorie: labels1[0], waarde: Number(schoneDataDetail[5].niveau4) },
   { groep: "Man", categorie: labels1[1], waarde: Number(schoneDataDetail[6].niveau4) },
   { groep: "Man", categorie: labels1[2], waarde: Number(schoneDataDetail[7].niveau4) },
   { groep: "Vrouw", categorie: labels1[0], waarde: Number(schoneDataDetail[5].niveau7) },
   { groep: "Vrouw", categorie: labels1[1], waarde: Number(schoneDataDetail[6].niveau7) },
-  { groep: "Vrouw", categorie: labels1[2], waarde: Number(schoneDataDetail[7].niveau7) }
-];
-
-const dataNiveau = [
+  { groep: "Vrouw", categorie: labels1[2], waarde: Number(schoneDataDetail[7].niveau7) },
+  { groep: "", categorie: labels1[0], waarde:0 },
+  { groep: "", categorie: labels1[1], waarde:0 },
+  { groep: "", categorie: labels1[2], waarde:0 },
   { groep: "Laaggeschoold", categorie: labels1[0], waarde: Number(schoneDataDetail[15].niveau4) },
   { groep: "Laaggeschoold", categorie: labels1[1], waarde: Number(schoneDataDetail[16].niveau4) },
   { groep: "Laaggeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau4) },
@@ -71,10 +68,10 @@ const dataNiveau = [
   { groep: "Middengeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau7) },
   { groep: "Hooggeschoold", categorie: labels1[0], waarde: Number(schoneDataDetail[15].niveau10) },
   { groep: "Hooggeschoold", categorie: labels1[1], waarde: Number(schoneDataDetail[16].niveau10) },
-  { groep: "Hooggeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau10) }
-];
-
-const dataGewest = [
+  { groep: "Hooggeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau10) },
+  { groep: " ", categorie: labels1[0], waarde:0 },
+  { groep: " ", categorie: labels1[1], waarde:0},
+  { groep: " ", categorie: labels1[2], waarde:0},
   { groep: "Brussel", categorie: labels1[0], waarde: Number(schoneDataDetail[25].niveau4) },
   { groep: "Brussel", categorie: labels1[1], waarde: Number(schoneDataDetail[26].niveau4) },
   { groep: "Brussel", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau4) },
@@ -83,10 +80,7 @@ const dataGewest = [
   { groep: "Vlaams", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau7) },
   { groep: "Waals", categorie: labels1[0], waarde: Number(schoneDataDetail[25].niveau10) },
   { groep: "Waals", categorie: labels1[1], waarde: Number(schoneDataDetail[26].niveau10) },
-  { groep: "Waals", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau10) }
-];
-
-const dataNat = [
+  { groep: "Waals", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau10) },
   { groep: "Belgie", categorie: labels1[0], waarde: Number(schoneDataDetail[35].niveau4) },
   { groep: "Belgie", categorie: labels1[1], waarde: Number(schoneDataDetail[36].niveau4) },
   { groep: "Belgie", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau4) },
@@ -95,10 +89,7 @@ const dataNat = [
   { groep: "EU27", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau7) },
   { groep: "niet-EU27", categorie: labels1[0], waarde: Number(schoneDataDetail[35].niveau10) },
   { groep: "niet-EU27", categorie: labels1[1], waarde: Number(schoneDataDetail[36].niveau10) },
-  { groep: "niet-EU27", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau10) }
-];
-
-const dataAMS = [
+  { groep: "niet-EU27", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau10) },
   { groep: "IAB-werkloze", categorie: labels1[0], waarde: Number(schoneDataDetail[45].niveau4) },
   { groep: "IAB-werkloze", categorie: labels1[1], waarde: Number(schoneDataDetail[46].niveau4) },
   { groep: "IAB-werkloze", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau4) },
@@ -107,46 +98,37 @@ const dataAMS = [
   { groep: "Werkende IAB-actieve", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau7) },
   { groep: "IAB-niet-beroepsactieve", categorie: labels1[0], waarde: Number(schoneDataDetail[45].niveau10) },
   { groep: "IAB-niet-beroepsactieve", categorie: labels1[1], waarde: Number(schoneDataDetail[46].niveau10) },
-  { groep: "IAB-niet-beroepsactieve", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau10) }
-];
-
-const dataVastTijdelijk = [
+  { groep: "IAB-niet-beroepsactieve", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau10) },
   { groep: "Vast", categorie: labels1[0], waarde: Number(schoneDataDetail[55].niveau4) },
   { groep: "Vast", categorie: labels1[1], waarde: Number(schoneDataDetail[56].niveau4) },
   { groep: "Vast", categorie: labels1[2], waarde: Number(schoneDataDetail[57].niveau4) },
   { groep: "Tijdelijk", categorie: labels1[0], waarde: Number(schoneDataDetail[55].niveau7) },
-  { groep: "Tijdelijk", categorie: labels1[1], waarde: Number(schoneDataDetail[56].niveau7) },
-  { groep: "Tijdelijk", categorie: labels1[2], waarde: Number(schoneDataDetail[57].niveau7) }
-];
-
-const dataAantalJarenWerk = [
-  { groep: "0 tot 1 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau4) },
-  { groep: "0 tot 1 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau4) },
-  { groep: "0 tot 1 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau4) },
-  { groep: "Meer dan 1 tot 2 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau7) },
-  { groep: "Meer dan 1 tot 2 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau7) },
-  { groep: "Meer dan 1 tot 2 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau7) },
-  { groep: "Meer dan 2 tot 5 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau10) },
-  { groep: "Meer dan 2 tot 5 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau10) },
-  { groep: "Meer dan 2 tot 5 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau10) },
-  { groep: "Meer dan 5 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau13) },
-  { groep: "Meer dan 5 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau13) },
-  { groep: "Meer dan 5 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau13) }
-];
-
-const databeroepsgroep = [
-  { groep: "Groep1", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau4) },
-  { groep: "Groep1", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau4) },
-  { groep: "Groep1", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau4) },
-  { groep: "Groep2", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau7) },
-  { groep: "Groep2", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau7) },
-  { groep: "Groep2", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau7) },
-  { groep: "Groep3", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau10) },
-  { groep: "Groep3", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau10) },
+  {groep: "Tijdelijk", categorie: labels1[1], waarde: Number(schoneDataDetail[56].niveau7) },
+  {groep: "Tijdelijk", categorie: labels1[2], waarde: Number(schoneDataDetail[57].niveau7) },
+  {groep: "0 tot 1 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau4) },
+  {groep: "0 tot 1 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau4) },
+  {groep: "0 tot 1 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau4) },
+  {groep: "Meer dan 1 tot 2 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau7) },
+  {groep: "Meer dan 1 tot 2 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau7) },
+  {groep: "Meer dan 1 tot 2 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau7) },
+  {groep: "Meer dan 2 tot 5 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau10) },
+  {groep: "Meer dan 2 tot 5 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau10) },
+  {groep: "Meer dan 2 tot 5 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau10) },
+  {groep: "Meer dan 5 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau13) },
+  {groep: "Meer dan 5 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau13) },
+  {groep: "Meer dan 5 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau13) },
+  {groep: "Groep1", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau4) },
+  {groep: "Groep1", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau4) },
+  {groep: "Groep1", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau4) },
+  {groep: "Groep2", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau7) },
+  {groep: "Groep2", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau7) },
+  {groep: "Groep2", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau7) },
+  {groep: "Groep3", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau10) },
+  {groep: "Groep3", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau10) },
   { groep: "Groep3", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau10) },
-  { groep: "Groep4", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau13) },
+  {groep: "Groep4", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau13) },
   { groep: "Groep4", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau13) },
-  { groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) }
+  {groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) }
 ];
 
 // --- 2. DE REBRUIKBARE CHART FUNCTIE ---
@@ -246,14 +228,14 @@ function createStackedChart(data, initialGroup) {
 // --- 3. INITIALISATIE ---
 
 const chart0 = createStackedChart(dataTotaal, "Totaal");
-const chart1 = createStackedChart(dataGeslacht, "Man");
-const chart2 = createStackedChart(dataNiveau, "Middengeschoold");
-const chart3 = createStackedChart(dataGewest, "Vlaams");
-const chart4 = createStackedChart(dataNat, "Belgie");
-const chart5 = createStackedChart(dataAMS, "Werkende IAB-actieve");
-const chart6 = createStackedChart(dataVastTijdelijk, "Vast");
-const chart7 = createStackedChart(dataAantalJarenWerk, "0 tot 1 jaar");
-const chart8 = createStackedChart(databeroepsgroep, "Groep1")
+const chart1 = createStackedChart(dataTotaal, "Man");
+const chart2 = createStackedChart(dataTotaal, "Middengeschoold");
+const chart3 = createStackedChart(dataTotaal, "Vlaams");
+const chart4 = createStackedChart(dataTotaal, "Belgie");
+const chart5 = createStackedChart(dataTotaal, "Werkende IAB-actieve");
+const chart6 = createStackedChart(dataTotaal, "Vast");
+const chart7 = createStackedChart(dataTotaal, "0 tot 1 jaar");
+const chart8 = createStackedChart(dataTotaal, "Groep1")
 
 // Inputs koppelen met 'input' event
 const select1 = Inputs.select(["Man", "Vrouw"], {label: "Geslacht:"});
@@ -279,6 +261,7 @@ select7.addEventListener("input", () => chart7.update(select7.value));
 
 const select8 = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4"], {label: "Beroepsgroep:"});
 select8.addEventListener("input", () => chart8.update(select8.value));
+
 ```
 
 <div class="grid grid-cols-4">
@@ -306,7 +289,6 @@ select8.addEventListener("input", () => chart8.update(select8.value));
     ${select1}
   </div>
   <div id="chart", style="margin-top: 10px;">
-    <!--${chart1.legend}--!>
     ${chart1.node}
 
   </div>
@@ -385,3 +367,201 @@ select8.addEventListener("input", () => chart8.update(select8.value));
 
   </div>
 </div>
+
+
+```js
+  // Specify the chart’s dimensions (except for the height).
+  const width = 928;
+  const marginTop = 30;
+  const marginRight = 20;
+  const marginBottom = 0;
+  const marginLeft = 150;
+
+  let beginGroep = ["Totaal", "Man", "Middengeschoold","Vlaams","Belgie","Werkende IAB-actieve","Vast","0 tot 1 jaar", "Groep1"];
+  const dataNu = dataTotaal.filter(d => beginGroep.includes(d.groep));
+
+  // Determine the series that need to be stacked.
+  const series = d3.stack()
+      .keys(d3.union(dataNu.map(d => d.categorie))) // distinct series keys, in input order
+      .value(([, D], key) => D.get(key).waarde) // get value for each series key and stack
+      .offset(d3.stackOffsetExpand)
+    (d3.index(dataNu, d => d.groep, d => d.categorie)); // group by stack then series key
+
+  // Compute the height from the number of stacks.
+  const height = series[0].length * 25 + marginTop + marginBottom;
+
+  // Prepare the scales for positional and color encodings.
+  const x = d3.scaleLinear()
+      .domain([0, d3.max(series, d => d3.max(d, d => d[1]))])
+      .range([marginLeft, width - marginRight]);
+
+  const y = d3.scaleBand()
+      .domain(beginGroep)
+      .range([marginTop, height - marginBottom])
+      .padding(0.08);
+
+  const color = d3.scaleOrdinal()
+      .domain(series.map(d => d.key))
+      .range(d3.schemeRdYlBu[series.length])
+      .unknown("#ccc");
+
+  // A function to format the value in the tooltip.
+  const formatValue = x => isNaN(x) ? "N/A" : x.toLocaleString("en")
+
+  // Create the SVG container.
+  const svg2 = d3.create("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", "max-width: 100%; height: auto;");
+  
+
+  // Append a group for each series, and a rect for each element in the series.
+  svg2.append("g")
+    .attr("class", "bar-container") // Een container voor alle lagen
+    .selectAll()
+    .data(series)
+    .join("g")
+      .attr("class", "bar-layer") // Specifieke class voor de gekleurde lagen
+      .attr("fill", d => color(d.key))
+    .selectAll("rect")
+    .data(D => D.map(d => (d.key = D.key, d)))
+    .join("rect")
+      .attr("x", d => x(d[0]))
+      .attr("y", d => y(d.data[0]))
+      .attr("height", y.bandwidth())
+      .attr("width", d => x(d[1]) - x(d[0]))
+    .append("title")
+      .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).waarde)}`);
+
+  // Append the horizontal axis.
+  svg2.append("g")
+      .attr("transform", `translate(0,${marginTop})`)
+      .call(d3.axisTop(x).ticks(width / 100, "%"))
+      .call(g => g.selectAll(".domain").remove());
+
+  // Append the vertical axis.
+  svg2.append("g")
+      .attr("class", "y-axis")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y).tickSizeOuter(0))
+      .call(g => g.selectAll(".domain").remove());
+
+
+function update2(selectedGroups) {
+    const filtered = dataTotaal.filter(d => selectedGroups.includes(d.groep));
+    
+    const series = d3.stack()
+        .keys(labels1)
+        .value(([, D], key) => D.get(key).waarde)
+        .offset(d3.stackOffsetExpand)
+        (d3.index(filtered, d => d.groep, d => d.categorie));
+
+    // 3. Update de schalen
+    // We sorteren de groepen zodat ze altijd in dezelfde volgorde staan als je 'selectedGroups' array
+    const y2 = d3.scaleBand()
+        .domain(selectedGroups)
+        .range([marginTop, height - marginBottom])
+        .padding(0.08);
+
+    // 4. Update de Y-as visueel
+    svg2.select(".y-axis") // Zorg dat je y-as in de init de class "y-axis" heeft
+        .transition().duration(750)
+        .call(d3.axisLeft(y2).tickSizeOuter(0));
+
+    // 5. De "Magic" update van de balken
+    // We selecteren alleen de lagen met de class "bar-layer"
+    svg2.selectAll(".bar-layer")
+        .data(series)
+        .selectAll("rect")
+        .data(D => D.map(d => (d.key = D.key, d)))
+        .join("rect") // Join zorgt dat nieuwe balken verschijnen als selectedGroups groter wordt
+            .transition().duration(750)
+            .attr("x", d => x(d[0])) // x blijft vaak gelijk bij expand
+            .attr("y", d => y2(d.data[0]))
+            .attr("width", d => x(d[1]) - x(d[0]))
+            .attr("height", y2.bandwidth());
+            
+    // Optioneel: Update titles/tooltips
+    svg2.selectAll("rect").select("title")
+        .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).waarde)}`);
+}
+
+
+
+const select1a = Inputs.select(["Man", "Vrouw", ""], {label: "Geslacht:"});
+select1a.addEventListener("input", () => {
+    beginGroep[1]= select1a.value;
+    update2(beginGroep);
+  });
+const select2a = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold", " "], {label: "Niveau:"});
+select2a.addEventListener("input", () => {
+    beginGroep[2]= select2a.value;
+    update2(beginGroep);
+  });
+const select3a = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
+select3a.addEventListener("input", () => {
+    beginGroep[3]= select3a.value;
+    update2(beginGroep);
+  });
+const select4a = Inputs.select(["Belgie", "EU27", "niet-EU27"], {label: "Herkomst nationaliteit:"});
+select4a.addEventListener("input", () => {
+    beginGroep[4]= select4a.value;
+    update2(beginGroep);
+  });
+const select5a = Inputs.select(["IAB-werkloze", "Werkende IAB-actieve", "IAB-niet-beroepsactieve"], {label: "Arbeidsmarktstatuut :"});
+select5a.addEventListener("input", () => {
+    beginGroep[5]= select5a.value;
+    update2(beginGroep);
+  });
+const select6a = Inputs.select(["Vast", "Tijdelijk"], {label: "Vast/Tijdelijk contract:"});
+select6a.addEventListener("input", () => {
+    beginGroep[6]= select6a.value;
+    update2(beginGroep);
+  });
+const select7a = Inputs.select(["0 tot 1 jaar", "Meer dan 1 tot 2 jaar", "Meer dan 2 tot 5 jaar", "Meer dan 5 jaar"], {label: "Aantal jaar aan het werk:"});
+select7a.addEventListener("input", () => {
+    beginGroep[7]= select7a.value;
+    update2(beginGroep);
+  });
+const select8a = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4"], {label: "Beroepsgroep:"});
+select8a.addEventListener("input", () => {
+    beginGroep[8]= select8a.value;
+    update2(beginGroep);
+  });
+```
+
+<div class="grid grid-cols-2">
+  <div class="card">
+    ${select1a}
+  </div>
+  <div class="card">
+    ${select2a}
+  </div>
+  <div class="card">
+    ${select3a}
+  </div>
+  <div class="card">
+    ${select4a}
+  </div>
+  <div class="card">
+    ${select5a}
+  </div>
+  <div class="card">
+    ${select6a}
+  </div>
+  <div class="card">
+    ${select7a}
+  </div>
+  <div class="card">
+    ${select8a}
+  </div>
+</div>
+
+<div class="card">
+    <h2>Totaal</h2>
+    ${chart1.legend}
+    ${svg2.node()}
+
+</div>
+
