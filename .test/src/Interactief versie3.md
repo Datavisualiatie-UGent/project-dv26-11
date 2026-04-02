@@ -6,6 +6,7 @@ toc: false
 
 # Interactief Versie 3
 
+
 ```js
 
 // --- 1. DATA VOORBEREIDING ---
@@ -30,6 +31,27 @@ const schoneDataDetail = dataDetail.map(d => ({
 }));
 
 const labels1 = ["Onderwijsniveau komt overeen met wat nodig is voor mijn job", "Onderwijsniveau is hoger dan wat nodig is voor mijn job", "Onderwijsniveau is lager dan wat nodig is voor mijn job"]; // Kortere keys voor gemak
+const data = workbook.sheet(3, {headers: true});
+const schoneData = data.map(d => ({
+  id: d["#"],
+  niveau1: d["Link diploma - job"],
+  niveau2: d["Link diploma - job_"],
+  niveau3: d["Link diploma - job__"],
+  niveau4: d["Link diploma - job___"],
+  niveau5: d["Link diploma - job____"],
+  niveau6: d["Link diploma - job_____"],
+  niveau7: d["Link diploma - job______"],
+  niveau8: d["Link diploma - job_______"],
+  niveau9: d["Link diploma - job________"],
+  niveau10: d["Link diploma - job_________"],
+  niveau11: d["Link diploma - job__________"]
+}));
+
+const dataTotaal = [
+  { groep: "Totaal", categorie: labels1[0], waarde: Number(schoneData[3].niveau4) },
+  { groep: "Totaal", categorie: labels1[1], waarde: Number(schoneData[4].niveau4) },
+  { groep: "Totaal", categorie: labels1[2], waarde: Number(schoneData[5].niveau4) }
+];
 
 const dataGeslacht = [
   { groep: "Man", categorie: labels1[0], waarde: Number(schoneDataDetail[5].niveau4) },
@@ -52,11 +74,23 @@ const dataNiveau = [
   { groep: "Hooggeschoold", categorie: labels1[2], waarde: Number(schoneDataDetail[17].niveau10) }
 ];
 
+const dataGewest = [
+  { groep: "Brussel", categorie: labels1[0], waarde: Number(schoneDataDetail[25].niveau4) },
+  { groep: "Brussel", categorie: labels1[1], waarde: Number(schoneDataDetail[26].niveau4) },
+  { groep: "Brussel", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau4) },
+  { groep: "Vlaams", categorie: labels1[0], waarde: Number(schoneDataDetail[25].niveau7) },
+  { groep: "Vlaams", categorie: labels1[1], waarde: Number(schoneDataDetail[26].niveau7) },
+  { groep: "Vlaams", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau7) },
+  { groep: "Waals", categorie: labels1[0], waarde: Number(schoneDataDetail[25].niveau10) },
+  { groep: "Waals", categorie: labels1[1], waarde: Number(schoneDataDetail[26].niveau10) },
+  { groep: "Waals", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau10) }
+];
+
 // --- 2. DE REBRUIKBARE CHART FUNCTIE ---
 function createStackedChart(data, initialGroup) {
   const width = 928;
   const height = 100;
-  const margin = {top: 30, right: 20, bottom: 0, left: 100};
+  const margin = {top: 30, right: 20, bottom: 0, left: 90};
 
   const color = d3.scaleOrdinal()
     .domain(labels1)
@@ -119,14 +153,39 @@ function createStackedChart(data, initialGroup) {
           return pct > 0.05 ? (pct * 100).toFixed(1) + "%" : (pct * 100).toFixed(0) + "%"; // Verberg als < 5%
         });
   }
+  const legendContainer = d3.create("div")
+    .style("display", "flex")
+    .style("flex-wrap", "wrap")
+    .style("gap", "15px")
+    .style("margin-bottom", "10px");
+
+  // Gebruik de domain van je bestaande color scale
+  color.domain().forEach(key => {
+    const item = legendContainer.append("div")
+      .style("display", "flex")
+      .style("align-items", "center")
+      .style("font-size", "12px");
+
+    item.append("div")
+      .style("width", "12px")
+      .style("height", "12px")
+      .style("background-color", color(key))
+      .style("margin-right", "5px")
+      .style("border-radius", "2px");
+
+    item.append("span").text(key);
+    }) ;
 
   update(initialGroup);
-  return { node: svg.node(), update, color };
+  return { node: svg.node(), update, color, legend:legendContainer };
 }
 
 // --- 3. INITIALISATIE ---
+
+const chart0 = createStackedChart(dataTotaal, "Totaal");
 const chart1 = createStackedChart(dataGeslacht, "Man");
 const chart2 = createStackedChart(dataNiveau, "Middengeschoold");
+const chart3 = createStackedChart(dataGewest, "Vlaams");
 
 // Inputs koppelen met 'input' event
 const select1 = Inputs.select(["Man", "Vrouw"], {label: "Geslacht:"});
@@ -134,23 +193,56 @@ select1.addEventListener("input", () => chart1.update(select1.value));
 
 const select2 = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold"], {label: "Niveau:"});
 select2.addEventListener("input", () => chart2.update(select2.value));
+
+const select3 = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
+select3.addEventListener("input", () => chart3.update(select3.value));
 ```
 
-<div class="card" id="chart-container">
+<div class="grid grid-cols-4">
+  <div class="card">
+    <h2>Totaal</h2>
+    <span class="big">${schoneDataDetail[5].niveau3 + schoneDataDetail[5].niveau6}</span>
+  </div>
+  <div class="card">
+    <h2>Totaal aantal respondenten</h2>
+    <span class="big">${schoneDataDetail[5].niveau5 + schoneDataDetail[5].niveau8}</span>
+  </div>
+</div>
+
+<div class="card">
+    <h2>Totaal</h2>
+  ${chart0.legend}
+  ${chart0.node}
+
+</div>
+
+
+
+<div class="card">
   <div id="button-area">
     ${select1}
   </div>
   <div id="chart", style="margin-top: 10px;">
+    <!--${chart1.legend}--!>
     ${chart1.node}
 
   </div>
 </div>
-<div class="card" id="chart-container">
+<div class="card">
   <div id="button-area">
     ${select2}
   </div>
   <div id="chart", style="margin-top: 10px;">
     ${chart2.node}
+
+  </div>
+</div>
+<div class="card">
+  <div id="button-area">
+    ${select3}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart3.node}
 
   </div>
 </div>
