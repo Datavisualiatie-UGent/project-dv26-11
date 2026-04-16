@@ -10,6 +10,7 @@ toc: false
   Als studenten in de Master wiskunde, leek het ons interessant om een uitgebreid onderzoek over de arbeidsmarkt te bestuderen. Meer specifiek werd er in deze enquête gepeild naar welke vaardigheden het vaakst gebruikt worden naast ‘calculate’, dat is de tijd die iemand in zijn/haar/hun job besteedt aan het maken van relatief complexe berekeningen (met of zonder computer). Je zou zeker kunnen zeggen dat dit een belangrijke component zal zijn in de job van een wiskundige. We bekeken zelf welke vaardigheden het meest gecombineerd worden met ‘calculate’, en ook welke vaardigheid we waarschijnlijk niet zullen moeten beheersen.
 </p>
 
+<p>Bron; EAK - Enquête naar de Arbeidskrachten 2022 - Ad hoc module "Vaardigheden die verband houden met de job"</p>
 
 ```js
 const niveaus = new Map();
@@ -25,11 +26,11 @@ const workbook = await FileAttachment("data/Ad hoc module 2022 tabellen.xlsx").x
 const data = workbook.sheet(4, {headers: true});
 
 const gestapeldeData = [
-    { groep: "Totaal", categorie: niveaus.get(0), waarde: Number(data[115].C) },
-    { groep: "Totaal", categorie: niveaus.get(1), waarde: Number(data[116].C) },
-    { groep: "Totaal", categorie: niveaus.get(2), waarde: Number(data[117].C) },
-    { groep: "Totaal", categorie: niveaus.get(3), waarde: Number(data[118].C) },
-    { groep: "Totaal", categorie: niveaus.get(4), waarde: Number(data[119].C) }
+    { groep: "Totaal", categorie: niveaus.get(4), waarde: Number(data[119].C), number:0 },
+    { groep: "Totaal", categorie: niveaus.get(3), waarde: Number(data[118].C), number:1 },
+    { groep: "Totaal", categorie: niveaus.get(2), waarde: Number(data[117].C), number:2 },
+    { groep: "Totaal", categorie: niveaus.get(1), waarde: Number(data[116].C), number:3 },
+    { groep: "Totaal", categorie: niveaus.get(0), waarde: Number(data[115].C), number:4 }
 ];
 
 const som = data[120].B;
@@ -38,19 +39,19 @@ function makedata(beginrij){
     const array = [[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0],[0,0,0,0,0]];
     {
       for (let i = 0; i < 5; i++) {
-        array[i][0] = data[beginrij+i].D
+        array[i][0] = data[beginrij+i].E
       }
       for (let i = 0; i < 5; i++) {
-        array[i][1] = data[beginrij+i].F
+        array[i][1] = data[beginrij+i].G
       }
       for (let i = 0; i < 5; i++) {
-        array[i][2] = data[beginrij+i].H
+        array[i][2] = data[beginrij+i].I
       }
       for (let i = 0; i < 5; i++) {
-        array[i][3] = data[beginrij+i].J
+        array[i][3] = data[beginrij+i].K
       }
       for (let i = 0; i < 5; i++) {
-        array[i][4] = data[beginrij+i].L
+        array[i][4] = data[beginrij+i].M
       }
     }
     // 2. Data vlakmaken voor Plot
@@ -96,12 +97,61 @@ function makeplot(dataplot, title){
         Plot.text(dataplot, {
           x: "kolom",
           y: "rij",
-          text: d => d.waarde ,
-          fill: d => d.waarde > 100000 ? "black" : "white"
+          text: d => ((d.waarde)*100).toFixed(1) + '%' ,
+          fill: d => d.waarde > 0.3 ? "black" : "white"
         })
       ]
     })
 
+}
+
+
+const textColor = new Map();
+{
+  textColor.set(0, "white");
+  textColor.set(1, "white");
+  textColor.set(2, "white");
+  textColor.set(3, "black");
+  textColor.set(4, "black");
+}
+
+function WiskundeData(row){
+  const tot = data[row].B;
+  return [
+    { groep: "Totaal", categorie: niveaus.get(4), waarde: Number(data[row].L/tot), number:0 },
+    { groep: "Totaal", categorie: niveaus.get(3), waarde: Number(data[row].J/tot), number:1 },
+    { groep: "Totaal", categorie: niveaus.get(2), waarde: Number(data[row].H/tot), number:2 },
+    { groep: "Totaal", categorie: niveaus.get(1), waarde: Number(data[row].F/tot), number:3 },
+    { groep: "Totaal", categorie: niveaus.get(0), waarde: Number(data[row].D/tot), number:4 }
+];
+}
+
+
+function makeplotDetail(data){
+  return Plot.plot({
+        marginLeft: 60,
+        width:1000,
+        x: { axis: "top", percent: true },
+        color: { scheme: "Magma", legend:true },
+        //y: {axis: null},
+        height:110,
+        marks: [
+          Plot.barX(data, {
+            offset: "normalize",
+            y: "groep",
+            x: "waarde",
+            fill: "categorie",
+            sort: { color: null, y: { value: "-x", reduce: "first" } }
+          }),
+          Plot.text(data, Plot.stackX({
+            y: "groep",
+            x: "waarde",
+            text: d => d.waarde > 0.05 ? ((d.waarde)*100).toFixed(1) + "%" : ((d.waarde)*100).toFixed(0) + "%" ,
+            fill: d => textColor.get(d.number)
+          })
+          )
+        ]
+      })
 }
 
 const chart1 = makeplot(makedata(115), "Digital");
@@ -114,58 +164,48 @@ const chart7 = makeplot(makedata(187), "Guidance");
 const chart8 = makeplot(makedata(211), "Repetitive");
 const chart9 = makeplot(makedata(223), "Procedure");
 
+const detailDigital = WiskundeData(115)
 
 ```
 <div class="card">
   <h1> Calculate = 
   <h4 class="explanation" style="max-width=1000px"> Tijd besteed aan relatief complexe berekeningen (eventueel met rekenmachine of computerprogramma)</h4>
-  ${Plot.plot({
-        marginLeft: 60,
-        width:1000,
-        x: { axis: "top", percent: true },
-        color: { scheme: "Magma", legend:true },
-        //y: {axis: null},
-        marks: [
-          Plot.barX(gestapeldeData, {
-            offset: "normalize",
-            y: "groep",
-            x: "waarde",
-            fill: "categorie",
-            sort: { color: null, y: { value: "-x", reduce: "first" } }
-          }),
-          Plot.text(gestapeldeData, {
-            y: "groep",
-            x: d => (d.waarde -0.01),
-            text: d => d.waarde > 0.05 ? ((d.waarde)*100).toFixed(1) + "%" : ((d.waarde)*100).toFixed(0) + "%" ,
-            fill: d => d.waarde > 0.3 ? "black" : "white"
-          }
-          )
-        ]
-      })
-    }
+  ${makeplotDetail(gestapeldeData)}
 
-  <div style="margin-top: 15px; font-family: sans-serif; font-size: 0.85rem; max-width:1000px">
-    <table style="max-width:500px;width: 100%; border-collapse: collapse;">
-      <thead style="border-bottom: 1px solid #ccc; color: #666;">
-        <tr>
-          <th style="text-align: left; padding: 4px;">Categorie</th>
-          <th style="text-align: right; padding: 4px;">Percentage</th>
-          <th style="text-align: right; padding: 4px;">Aantal personen</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${gestapeldeData.map(d => html`
-          <tr style="border-bottom: 1px solid #eee;max-width:500px;">
-            <td style="padding: 6px 4px;">${d.categorie}</td>
-            <td style="text-align: right; padding: 6px 4px;">${(d.waarde * 100).toFixed(1)}%</td>
-            <td style="text-align: right; padding: 6px 4px; font-weight: bold;">
-              ${(d.waarde * som).toLocaleString("nl-BE", {maximumFractionDigits: 0})}
-            </td>
-          </tr>
-        `)}
-      </tbody>
-    </table>
+  <div style="margin-top: 20px; font-family: var(--sans-serif); font-size: 13px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; background: white; color: #333;">
+  
+  <div style="display: flex; background: #444; color: white; font-weight: bold; padding: 12px 10px;width:640;">
+    <div style="flex: 3; text-align: left;">Frequentie</div>
+    <div style="flex: 1; text-align: right;">Aandeel</div>
+    <div style="flex: 1.5; text-align: right;">Aantal personen</div>
   </div>
+
+  ${gestapeldeData.map(d => html`
+    <div style="display: flex; padding: 10px; border-bottom: 1px solid #eee; align-items: center;width:1000px">
+      <div style="flex: 3; text-align: left; display: flex; align-items: center;">
+        <span style="min-width: 12px; width: 12px; height: 12px; margin-right: 10px; border-radius: 2px; background: ${
+              d.categorie === niveaus.get(4) ? "#3b0f70" : 
+              d.categorie === niveaus.get(3) ? "#8c2981" : 
+              d.categorie === niveaus.get(2) ? "#de4968" : 
+              d.categorie === niveaus.get(1) ? "#fe9f6d" : "#fcfdbf"
+        };"></span>
+        <span style="white-space: nowrap;">${d.categorie}</span>
+      </div> 
+      <div style="flex: 1; text-align: right; font-variant-numeric: tabular-nums;">
+        ${(d.waarde * 100).toFixed(1)}%
+      </div>
+      <div style="flex: 1.5; text-align: right; font-weight: bold; font-variant-numeric: tabular-nums;">
+        ${Math.round(d.waarde * som).toLocaleString("nl-BE")}
+      </div>
+    </div>
+  `)}
+
+  <div style="display: flex; padding: 12px 10px; background: #f9f9f9; font-weight: bold; border-top: 2px solid #444;">
+    <div style="flex: 3; text-align: left;">Totaal</div>
+    <div style="flex: 1; text-align: right;">100.0%</div>
+    <div style="flex: 1.5; text-align: right;">${Math.round(som).toLocaleString("nl-BE")}</div>
+  </div>
+</div>
 
 </div>
 
@@ -176,9 +216,12 @@ const chart9 = makeplot(makedata(223), "Procedure");
 
 <div class="grid grid-cols-1">
   <div class="card">
-  <h1> Calculate-Digital 
-  <h4 class="explanation" style="max-width=1000px"> Tijd besteed aan werk met een computer, een tablet of een smartphone, telefoongesprekken niet inbegrepen</h4>
-    ${chart1}
+    <h1> Calculate-Digital 
+    <h4 class="explanation" style="max-width:1000px"> Tijd besteed aan werk met een computer, een tablet of een smartphone, telefoongesprekken niet inbegrepen</h4>
+      ${chart1}
+    <h1 class="explanation" style="max-width:1000px; margin-top:20px"> Digital in groep met hoogste Calculate</h1>
+    ${makeplotDetail(WiskundeData(115))}
+
   </div>
 </div>
 
@@ -192,6 +235,8 @@ const chart9 = makeplot(makedata(223), "Procedure");
     <h1> Calculate-Physical 
     <h4 class="explanation" style="max-width=1000px">Tijd besteed aan zwaar lichamelijk werk</h4>
     ${chart3}
+    <h1 class="explanation" style="max-width:1000px; margin-top:20px"> Phsical in groep met hoogste Calculate</h1>
+    ${makeplotDetail(WiskundeData(139))}
   </div>
 </div>
 
@@ -205,6 +250,8 @@ const chart9 = makeplot(makedata(223), "Procedure");
     <h1> Calculate-CommInt
     <h4 class="explanation" style="max-width=1000px">Tijd besteed aan het mondeling communiceren met mensen binnen het bedrijf of de organisatie</h4>
     ${chart5}
+    <h1 class="explanation" style="max-width:1000px; margin-top:20px"> CommInt in groep met hoogste Calculate</h1>
+    ${makeplotDetail(WiskundeData(163))}
   </div>
 </div>
 

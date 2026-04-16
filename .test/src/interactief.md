@@ -125,17 +125,19 @@ const dataTotaal = [
   {groep: "Groep2", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau7) },
   {groep: "Groep3", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau10) },
   {groep: "Groep3", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau10) },
-  { groep: "Groep3", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau10) },
+  {groep: "Groep3", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau10) },
   {groep: "Groep4", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau13) },
-  { groep: "Groep4", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau13) },
+  {groep: "Groep4", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau13) },
   {groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) }
 ];
+
+const cutoff =12;
 
 // --- 2. DE REBRUIKBARE CHART FUNCTIE ---
 function createStackedChart(data, initialGroup) {
   const width = 928;
   const height = 100;
-  const margin = {top: 30, right: 20, bottom: 0, left: 90};
+  const margin = {top: 30, right: 20, bottom: 0, left: initialGroup.length < cutoff ? 60:99};
 
   const color = d3.scaleOrdinal()
     .domain(labels1)
@@ -166,7 +168,14 @@ function createStackedChart(data, initialGroup) {
       (d3.index(filtered, d => d.groep, d => d.categorie));
 
     y.domain([selectedGroup]);
-    yAxisGroup.transition().duration(750).call(d3.axisLeft(y).tickSizeOuter(0));
+    yAxisGroup.transition().duration(750)
+    .call(d3.axisLeft(y).tickSizeOuter(0))
+    .selection() // Zorg dat we op de selectie werken na de call
+    .selectAll(".tick text")
+    .attr("transform", selectedGroup.length < cutoff ? "rotate(0)" : "rotate(-35)")
+    .attr("text-anchor", "end") // Zorgt dat de tekst netjes naar de as wijst
+    .attr("dx", selectedGroup.length < cutoff ? "-0.5em" : "17")        
+    .attr("dy", selectedGroup.length < cutoff ? "0.32em" : "-25"); 
 
     // Balken
     layerGroup.selectAll("g")
@@ -229,10 +238,10 @@ function createStackedChart(data, initialGroup) {
 
 const chart0 = createStackedChart(dataTotaal, "Totaal");
 const chart1 = createStackedChart(dataTotaal, "Man");
-const chart2 = createStackedChart(dataTotaal, "Middengeschoold");
+const chart2 = createStackedChart(dataTotaal, "Laaggeschoold");
 const chart3 = createStackedChart(dataTotaal, "Vlaams");
 const chart4 = createStackedChart(dataTotaal, "Belgie");
-const chart5 = createStackedChart(dataTotaal, "Werkende IAB-actieve");
+const chart5 = createStackedChart(dataTotaal, "IAB-werkloze");
 const chart6 = createStackedChart(dataTotaal, "Vast");
 const chart7 = createStackedChart(dataTotaal, "0 tot 1 jaar");
 const chart8 = createStackedChart(dataTotaal, "Groep1")
@@ -271,7 +280,7 @@ select8.addEventListener("input", () => chart8.update(select8.value));
   const marginTop = 30;
   const marginRight = 20;
   const marginBottom = 0;
-  const marginLeft = 150;
+  const marginLeft = 130;
 
   let beginGroep = ["Totaal", "Man", "Middengeschoold","Vlaams","Belgie","Werkende IAB-actieve","Vast","0 tot 1 jaar", "Groep1"];
   const dataNu = dataTotaal.filter(d => beginGroep.includes(d.groep));
@@ -304,7 +313,6 @@ select8.addEventListener("input", () => chart8.update(select8.value));
   // A function to format the value in the tooltip.
   const formatValue = x => isNaN(x) ? "N/A" : x.toLocaleString("en")
 
-  // Create the SVG container.
   const svg2 = d3.create("svg")
       .attr("width", width)
       .attr("height", height)
@@ -312,7 +320,6 @@ select8.addEventListener("input", () => chart8.update(select8.value));
       .attr("style", "max-width: 100%; height: auto;");
   
 
-  // Append a group for each series, and a rect for each element in the series.
   svg2.append("g")
     .attr("class", "bar-container") // Een container voor alle lagen
     .selectAll()
@@ -330,13 +337,11 @@ select8.addEventListener("input", () => chart8.update(select8.value));
     .append("title")
       .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).waarde)}`);
 
-  // Append the horizontal axis.
   svg2.append("g")
       .attr("transform", `translate(0,${marginTop})`)
       .call(d3.axisTop(x).ticks(width / 100, "%"))
       .call(g => g.selectAll(".domain").remove());
 
-  // Append the vertical axis.
   svg2.append("g")
       .attr("class", "y-axis")
       .attr("transform", `translate(${marginLeft},0)`)
@@ -361,12 +366,10 @@ function update2(selectedGroups) {
         .padding(0.08);
 
     // 4. Update de Y-as visueel
-    svg2.select(".y-axis") // Zorg dat je y-as in de init de class "y-axis" heeft
+    svg2.select(".y-axis") 
         .transition().duration(750)
         .call(d3.axisLeft(y2).tickSizeOuter(0));
 
-    // 5. De "Magic" update van de balken
-    // We selecteren alleen de lagen met de class "bar-layer"
     svg2.selectAll(".bar-layer")
         .data(series)
         .selectAll("rect")
@@ -378,7 +381,7 @@ function update2(selectedGroups) {
             .attr("width", d => x(d[1]) - x(d[0]))
             .attr("height", y2.bandwidth());
             
-    // Optioneel: Update titles/tooltips
+    //Update titles/tooltips
     svg2.selectAll("rect").select("title")
         .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).waarde)}`);
 }
@@ -427,11 +430,12 @@ select8a.addEventListener("input", () => {
   });
 ```
 
-<div class="grid grid-cols-1">
-    <p style="max-width:1000px"> In een arbeidsonderzoek onderzocht men of het onderwijsniveau van de ondervraagden overeenstemde met het niveau dat hun job eigenlijk van hen vraagt.</p>
-    <p>
+<div class="grid grid-cols-1" style="height:200px">
+    <p style="max-width:1000px"> In een arbeidsonderzoek onderzocht men of het onderwijsniveau van de ondervraagden overeenstemde met het niveau dat hun job eigenlijk van hen vraagt.
+    Volgens de enquête (Jongeren op de arbeidsmarkt (15-34 jaar)): "Deze vraag werd enkel gesteld aan jongeren die aan het werk zijn of een eerdere werkervaring hebben".
     Op deze pagina kan je zelf de data ontdekken. Je kan bestuderen of de resultaten erg afhangen van gender, van scholingsgraad, land van herkomst, etc.
     </p>
+    <p style="max-width:1000px; max-height:30px">Bron: Statbel (Algemene Directie Statistiek - Statistics Belgium), Enquête naar de Arbeidskrachten (EAK)</p>
 </div>
 
 <div class="grid grid-cols-4">
@@ -458,7 +462,7 @@ select8a.addEventListener("input", () => {
     ${select1a}
   </div>
   <div >
-    ${select2a}
+    ${select2a}*
   </div>
   <div >
     ${select3a}
@@ -476,7 +480,7 @@ select8a.addEventListener("input", () => {
     ${select7a}
   </div>
   <div>
-    ${select8a}
+    ${select8a}**
   </div>
 </div>
 
@@ -486,6 +490,8 @@ select8a.addEventListener("input", () => {
     ${svg2.node()}
 
 </div>
+  <p style="max-width:1000px"> *Laag: maximaal een diploma van het lager secundair onderwijs. Midden: een diploma behaald van het hoger secundair onderwijs, maar geen diploma van het hoger onderwijs. Hoog: een diploma van het hoger onderwijs.</p>
+  <p style="max-width:1000px"> **Groep 1: Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen, Groep 2: Administratief personeel; Dienstverlenend personeel en verkopers,Groep 3: Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs,Groep 4: Elementaire beroepen.</p>
 </div>
 
 
@@ -502,6 +508,10 @@ select8a.addEventListener("input", () => {
   <div id="button-area">
     ${select2}
   </div>
+
+  <p style="max-width:1000px"> Laag: maximaal een diploma van het lager secundair onderwijs. </p>
+  <p>Midden: een diploma behaald van het hoger secundair onderwijs, maar geen diploma van het hoger onderwijs.</p> <p>Hoog: een diploma van het hoger onderwijs.</p>
+
   <div id="chart", style="margin-top: 10px;">
     ${chart2.node}
 
