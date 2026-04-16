@@ -4,7 +4,7 @@ title: test
 toc: false
 ---
 
-# test
+# test 
 
 
 ```js
@@ -130,6 +130,7 @@ const dataTotaal = [
   { groep: "Groep4", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau13) },
   {groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) }
 ];
+
 // --- 2. DE REBRUIKBARE CHART FUNCTIE ---
 function createStackedChart(data, initialGroup) {
   const width = 928;
@@ -223,37 +224,46 @@ function createStackedChart(data, initialGroup) {
   update(initialGroup);
   return { node: svg.node(), update, color, legend:legendContainer };
 }
+
 // --- 3. INITIALISATIE ---
 
-
+const chart0 = createStackedChart(dataTotaal, "Totaal");
 const chart1 = createStackedChart(dataTotaal, "Man");
-//const chart2 = createStackedChart(dataNiveau, "Middengeschoold");
-//const chart3 = createStackedChart(dataGewest, "Vlaams");
-//const chart4 = createStackedChart(dataNat, "Belgie");
-//const chart5 = createStackedChart(dataAMS, "Werkende IAB-actieve");
-//const chart6 = createStackedChart(dataVastTijdelijk, "Vast");
-//const chart7 = createStackedChart(dataAantalJarenWerk, "0 tot 1 jaar");
-//const chart8 = createStackedChart(databeroepsgroep, "Groep1")
+const chart2 = createStackedChart(dataTotaal, "Middengeschoold");
+const chart3 = createStackedChart(dataTotaal, "Vlaams");
+const chart4 = createStackedChart(dataTotaal, "Belgie");
+const chart5 = createStackedChart(dataTotaal, "Werkende IAB-actieve");
+const chart6 = createStackedChart(dataTotaal, "Vast");
+const chart7 = createStackedChart(dataTotaal, "0 tot 1 jaar");
+const chart8 = createStackedChart(dataTotaal, "Groep1")
+
+// Inputs koppelen met 'input' event
+const select1 = Inputs.select(["Man", "Vrouw"], {label: "Geslacht:"});
+select1.addEventListener("input", () => chart1.update(select1.value));
+
+const select2 = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold"], {label: "Niveau:"});
+select2.addEventListener("input", () => chart2.update(select2.value));
+
+const select3 = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
+select3.addEventListener("input", () => chart3.update(select3.value));
+
+const select4 = Inputs.select(["Belgie", "EU27", "niet-EU27"], {label: "Herkomst nationaliteit:"});
+select4.addEventListener("input", () => chart4.update(select4.value));
+
+const select5 = Inputs.select(["IAB-werkloze", "Werkende IAB-actieve", "IAB-niet-beroepsactieve"], {label: "Arbeidsmarktstatuut :"});
+select5.addEventListener("input", () => chart5.update(select5.value));
+
+const select6 = Inputs.select(["Vast", "Tijdelijk"], {label: "Vast/Tijdelijk contract:"});
+select6.addEventListener("input", () => chart6.update(select6.value));
+
+const select7 = Inputs.select(["0 tot 1 jaar", "Meer dan 1 tot 2 jaar", "Meer dan 2 tot 5 jaar", "Meer dan 5 jaar"], {label: "Aantal jaar aan het werk:"});
+select7.addEventListener("input", () => chart7.update(select7.value));
+
+const select8 = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4"], {label: "Beroepsgroep:"});
+select8.addEventListener("input", () => chart8.update(select8.value));
 
 ```
 
-<div class="grid grid-cols-4">
-  <div class="card">
-    <h2>Totaal</h2>
-    <span class="big">${schoneDataDetail[5].niveau3 + schoneDataDetail[5].niveau6}</span>
-  </div>
-  <div class="card">
-    <h2>Totaal aantal respondenten</h2>
-    <span class="big">${schoneDataDetail[5].niveau5 + schoneDataDetail[5].niveau8}</span>
-  </div>
-</div>
-
-<div class="card">
-    <h2>Totaal</h2>
-  ${chart1.legend}
-  ${chart1.node}
-
-</div>
 
 ```js
   // Specify the chart’s dimensions (except for the height).
@@ -288,7 +298,7 @@ const chart1 = createStackedChart(dataTotaal, "Man");
 
   const color = d3.scaleOrdinal()
       .domain(series.map(d => d.key))
-      .range(d3.schemeSpectral[series.length])
+      .range(d3.schemeRdYlBu[series.length])
       .unknown("#ccc");
 
   // A function to format the value in the tooltip.
@@ -375,42 +385,191 @@ function update2(selectedGroups) {
 
 
 
-const select1 = Inputs.select(["Man", "Vrouw", ""], {label: "Geslacht:"});
-select1.addEventListener("input", () => {
-    beginGroep[1]= select1.value;
+const select1a = Inputs.select(["Man", "Vrouw", ""], {label: "Geslacht:"});
+select1a.addEventListener("input", () => {
+    beginGroep[1]= select1a.value;
     update2(beginGroep);
   });
-const select2 = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold", " "], {label: "Niveau:"});
-select2.addEventListener("input", () => {
-    beginGroep[2]= select2.value;
+const select2a = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold", " "], {label: "Niveau:"});
+select2a.addEventListener("input", () => {
+    beginGroep[2]= select2a.value;
     update2(beginGroep);
   });
-const select3 = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
-//select3.addEventListener("input", () => chart3.update(select3.value));
-
-const select4 = Inputs.select(["Belgie", "EU27", "niet-EU27"], {label: "Herkomst nationaliteit:"});
-//select4.addEventListener("input", () => chart4.update(select4.value));
-
-const select5 = Inputs.select(["IAB-werkloze", "Werkende IAB-actieve", "IAB-niet-beroepsactieve"], {label: "Arbeidsmarktstatuut :"});
-//select5.addEventListener("input", () => chart5.update(select5.value));
-
-const select6 = Inputs.select(["Vast", "Tijdelijk"], {label: "Vast/Tijdelijk contract:"});
-//select6.addEventListener("input", () => chart6.update(select6.value));
-
-const select7 = Inputs.select(["0 tot 1 jaar", "Meer dan 1 tot 2 jaar", "Meer dan 2 tot 5 jaar", "Meer dan 5 jaar"], {label: "Aantal jaar aan het werk:"});
-//select7.addEventListener("input", () => chart7.update(select7.value));
-
-const select8 = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4"], {label: "Beroepsgroep:"});
-//select8.addEventListener("input", () => chart8.update(select8.value));
-
+const select3a = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
+select3a.addEventListener("input", () => {
+    beginGroep[3]= select3a.value;
+    update2(beginGroep);
+  });
+const select4a = Inputs.select(["Belgie", "EU27", "niet-EU27"], {label: "Herkomst nationaliteit:"});
+select4a.addEventListener("input", () => {
+    beginGroep[4]= select4a.value;
+    update2(beginGroep);
+  });
+const select5a = Inputs.select(["IAB-werkloze", "Werkende IAB-actieve", "IAB-niet-beroepsactieve"], {label: "Arbeidsmarktstatuut :"});
+select5a.addEventListener("input", () => {
+    beginGroep[5]= select5a.value;
+    update2(beginGroep);
+  });
+const select6a = Inputs.select(["Vast", "Tijdelijk"], {label: "Vast/Tijdelijk contract:"});
+select6a.addEventListener("input", () => {
+    beginGroep[6]= select6a.value;
+    update2(beginGroep);
+  });
+const select7a = Inputs.select(["0 tot 1 jaar", "Meer dan 1 tot 2 jaar", "Meer dan 2 tot 5 jaar", "Meer dan 5 jaar"], {label: "Aantal jaar aan het werk:"});
+select7a.addEventListener("input", () => {
+    beginGroep[7]= select7a.value;
+    update2(beginGroep);
+  });
+const select8a = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4"], {label: "Beroepsgroep:"});
+select8a.addEventListener("input", () => {
+    beginGroep[8]= select8a.value;
+    update2(beginGroep);
+  });
 ```
 
+<div class="grid grid-cols-1">
+    <p style="max-width:1000px"> In een arbeidsonderzoek onderzocht men of het onderwijsniveau van de ondervraagden overeenstemde met het niveau dat hun job eigenlijk van hen vraagt.</p>
+    <p>
+    Op deze pagina kan je zelf de data ontdekken. Je kan bestuderen of de resultaten erg afhangen van gender, van scholingsgraad, land van herkomst, etc.
+    </p>
+</div>
+
+<div class="grid grid-cols-4">
+  <div class="card">
+    <h2>Totaal</h2>
+    <span class="big">${schoneDataDetail[5].niveau3 + schoneDataDetail[5].niveau6}</span>
+  </div>
+  <div class="card">
+    <h2>Totaal aantal respondenten</h2>
+    <span class="big">${schoneDataDetail[5].niveau5 + schoneDataDetail[5].niveau8}</span>
+  </div>
+</div>
 
 <div class="card">
     <h2>Totaal</h2>
-  ${select1}
-  ${select2}
-  ${svg2.node()}
+  ${chart0.legend}
+  ${chart0.node}
 
+</div>
+
+<div class="card">
+<div class="grid grid-cols-2">
+  <div >
+    ${select1a}
+  </div>
+  <div >
+    ${select2a}
+  </div>
+  <div >
+    ${select3a}
+  </div>
+  <div >
+    ${select4a}
+  </div>
+  <div >
+    ${select5a}
+  </div>
+  <div >
+    ${select6a}
+  </div>
+  <div >
+    ${select7a}
+  </div>
+  <div>
+    ${select8a}
+  </div>
+</div>
+
+<div >
+    <h2>Vergelijker</h2>
+    ${chart1.legend}
+    ${svg2.node()}
+
+</div>
+</div>
+
+
+<div class="card">
+  <div id="button-area">
+    ${select1}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart1.node}
+
+  </div>
+</div>
+<div class="card">
+  <div id="button-area">
+    ${select2}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart2.node}
+
+  </div>
+</div>
+<div class="card">
+  <div id="button-area">
+    ${select3}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart3.node}
+
+  </div>
+</div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select4}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart4.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select5}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart5.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select6}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart6.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select7}
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    ${chart7.node}
+
+  </div>
+</div>
+
+<div class="card">
+  <div id="button-area">
+    ${select8}
+
+  </div>
+  <div id="chart", style="margin-top: 10px;">
+    <p> Groep 1: Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen, </p>
+    <p>Groep 2: Administratief personeel; Dienstverlenend personeel en verkopers, </p>
+    <p>Groep 3: Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs,</p>
+    <p>Groep 4: Elementaire beroepen.</p>
+    ${chart8.node}
+
+  </div>
 </div>
 

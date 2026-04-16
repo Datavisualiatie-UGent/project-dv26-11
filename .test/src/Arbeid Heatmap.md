@@ -6,7 +6,9 @@ toc: false
 
 # Arbeid Heatmap
 
-Hieronder zie je de heatmap op basis van de array data.
+<p style="max-width:1000px"> 
+  Als studenten in de Master wiskunde, leek het ons interessant om een uitgebreid onderzoek over de arbeidsmarkt te bestuderen. Meer specifiek werd er in deze enquête gepeild naar welke vaardigheden het vaakst gebruikt worden naast ‘calculate’, dat is de tijd die iemand in zijn/haar/hun job besteedt aan het maken van relatief complexe berekeningen (met of zonder computer). Je zou zeker kunnen zeggen dat dit een belangrijke component zal zijn in de job van een wiskundige. We bekeken zelf welke vaardigheden het meest gecombineerd worden met ‘calculate’, en ook welke vaardigheid we waarschijnlijk niet zullen moeten beheersen.
+</p>
 
 
 ```js
@@ -30,23 +32,25 @@ const gestapeldeData = [
     { groep: "Totaal", categorie: niveaus.get(4), waarde: Number(data[119].C) }
 ];
 
+const som = data[120].B;
+
 function makedata(beginrij){
     const array = [[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0],[0,0,0,0,0]];
     {
       for (let i = 0; i < 5; i++) {
-        array[i][0] = data[beginrij+i].E
+        array[i][0] = data[beginrij+i].D
       }
       for (let i = 0; i < 5; i++) {
-        array[i][1] = data[beginrij+i].G
+        array[i][1] = data[beginrij+i].F
       }
       for (let i = 0; i < 5; i++) {
-        array[i][2] = data[beginrij+i].I
+        array[i][2] = data[beginrij+i].H
       }
       for (let i = 0; i < 5; i++) {
-        array[i][3] = data[beginrij+i].K
+        array[i][3] = data[beginrij+i].J
       }
       for (let i = 0; i < 5; i++) {
-        array[i][4] = data[beginrij+i].M
+        array[i][4] = data[beginrij+i].L
       }
     }
     // 2. Data vlakmaken voor Plot
@@ -92,8 +96,8 @@ function makeplot(dataplot, title){
         Plot.text(dataplot, {
           x: "kolom",
           y: "rij",
-          text: d => ((d.waarde)*100).toFixed(1) + '%' ,
-          fill: d => d.waarde > 0.3 ? "black" : "white"
+          text: d => d.waarde ,
+          fill: d => d.waarde > 100000 ? "black" : "white"
         })
       ]
     })
@@ -109,6 +113,8 @@ const chart6 = makeplot(makedata(175), "CommExt");
 const chart7 = makeplot(makedata(187), "Guidance");
 const chart8 = makeplot(makedata(211), "Repetitive");
 const chart9 = makeplot(makedata(223), "Procedure");
+
+
 ```
 <div class="card">
   <h1> Calculate = 
@@ -138,8 +144,35 @@ const chart9 = makeplot(makedata(223), "Procedure");
       })
     }
 
+  <div style="margin-top: 15px; font-family: sans-serif; font-size: 0.85rem; max-width:1000px">
+    <table style="max-width:500px;width: 100%; border-collapse: collapse;">
+      <thead style="border-bottom: 1px solid #ccc; color: #666;">
+        <tr>
+          <th style="text-align: left; padding: 4px;">Categorie</th>
+          <th style="text-align: right; padding: 4px;">Percentage</th>
+          <th style="text-align: right; padding: 4px;">Aantal personen</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${gestapeldeData.map(d => html`
+          <tr style="border-bottom: 1px solid #eee;max-width:500px;">
+            <td style="padding: 6px 4px;">${d.categorie}</td>
+            <td style="text-align: right; padding: 6px 4px;">${(d.waarde * 100).toFixed(1)}%</td>
+            <td style="text-align: right; padding: 6px 4px; font-weight: bold;">
+              ${(d.waarde * som).toLocaleString("nl-BE", {maximumFractionDigits: 0})}
+            </td>
+          </tr>
+        `)}
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
+<p style="max-width:1000px"> 
+  Wat ons meteen opvalt is dat zeer weinig mensen aangeven als voornaamste taak bezig te zijn met het maken van complexe berekeningen. Bijna 60% geeft zelfs aan dit nooit te moeten doen.
+  We zullen ons hier dus focussen op zij die aangeven het grootste deel van de tijd bezig te zijn met wiskunde, wat maar 2% is, en zij die aangeven meer dan de helft van de tijd te spenderen aan berekeningen, wat toch ruim 5% van de ondervraagden bedraagt. De totale groep bestaat uit 360 personen.
+</p>
 
 <div class="grid grid-cols-1">
   <div class="card">
@@ -149,13 +182,10 @@ const chart9 = makeplot(makedata(223), "Procedure");
   </div>
 </div>
 
-<div class="grid grid-cols-1">
-  <div class="card">
-    <h1> Calculate-Reading 
-  <h4 class="explanation" style="max-width=1000px">Tijd besteed aan het lezen van werkgerelateerde handleidingen of technische documenten, exclusief brieven of e-mails</h4>
-    ${chart2}
-  </div>
-</div>
+<p style="max-width:1000px"> 
+  Uit het onderzoek blijkt dat we zeer vaak zullen moeten werken met een computer, tablet pf smartphone. Dit is vanzelfsprekend aangezien de meeste complexe berekeningen gedaan worden met een computer en niet meer met de hand. 85,6% van zij die ten minste de helft van de tijd met complexe berekeningen bezig zijn, geven dan ook aan minstens de helft van de tijd digitaal aan het werk te zijn. Slechts 3,8% van de wiskundigen geeft aan nooit digitaal te moeten werken.
+</p>
+
 
 <div class="grid grid-cols-1">
   <div class="card">
@@ -165,13 +195,10 @@ const chart9 = makeplot(makedata(223), "Procedure");
   </div>
 </div>
 
-<div class="grid grid-cols-1">
-  <div class="card">
-    <h1> Calculate-Dexterity 
-    <h4 class="explanation" style="max-width=1000px">Tijd besteed aan taken waarbij precieze handelingen moeten uitgevoerd worden met de vingers zoals bij chirurgie of tekenen</h4>
-    ${chart4}
-  </div>
-</div>
+<p style="max-width:1000px"> 
+  Zoals duidelijk op de heatmap, zijn mensen die wiskundig bezig zijn, over het algemeen niet fysiek bezig. In het totaal besteedt maar 11% van de wiskundigen ook veel tijd aan fysieke arbeid op het werk, terwijl 72% van onze groep aangeeft zich nooit fysiek te moeten inspannen. De kans lijkt ons dus relatief groot dat ook wij niet met zware benen en stijve arme thuis zullen komen na het werk.
+</p>
+
 
 <div class="grid grid-cols-1">
   <div class="card">
@@ -181,34 +208,7 @@ const chart9 = makeplot(makedata(223), "Procedure");
   </div>
 </div>
 
-<div class="grid grid-cols-1">
-  <div class="card">
-    <h1> Calculate-CommExt
-    <h4 class="explanation" style="max-width=1000px">Tijd besteed aan het mondeling communiceren met mensen van buiten het bedrijf of de organisatie</h4>
-    ${chart6}
-  </div>
-</div>
+<p style="max-width:1000px"> 
+  In onze job later zal het ook erg belangrijk zijn om onze bevindingen te communiceren met onze collega’s in het bedrijf. Dat blijkt ook uit dit onderzoek. 53,3% van zij die veel met wiskunde bezig zijn, moeten ook zeer regelmatig communiceren met anderen binnen hun bedrijf. Ook dit lijkt ons eerder logisch, omdat het interpreteren van resultaten uit complexe berekeningen vaak niet eenvoudig is.
+</p>
 
-<div class="grid grid-cols-1">
-  <div class="card">
-    <h1> Calculate-Guidance
-    <h4 class="explanation" style="max-width=1000px">Tijd besteed aan adviseren, opleiden en onderwijzen van andere mensen zoals klanten, studenten of collega's</h4>
-    ${chart7}
-  </div>
-</div>
-
-<div class="grid grid-cols-1">
-  <div class="card">
-    <h1> Calculate-Repetitive
-    <h4 class="explanation" style="max-width=1000px">Mate waarin de job repetitieve taken omvat </h4>
-    ${chart8}
-  </div>
-</div>
-
-<div class="grid grid-cols-1">
-  <div class="card">
-    <h1> Calculate-Procedure
-    <h4 class="explanation" style="max-width=1000px">Mate waarin de taken nauwkeurig omschreven zijn door strikte procedures zoals kookrecepten, medische protocollen of bouwplannen</h4>
-    ${chart9}
-  </div>
-</div>

@@ -1,15 +1,14 @@
 ---
 theme: dashboard
-title: Interactief versie2
+title: test 4
 toc: false
 ---
 
-# Interactief Versie 2
+# test 4
 
 <!-- Load and transform the data -->
 
 ```js
-const launches = FileAttachment("data/launches.csv").csv({typed: true});
 const workbook = await FileAttachment("data/AHM 2024 YNG_NL.xlsx").xlsx();
 const data = workbook.sheet(3, {headers: true});
 const schoneData = data.map(d => ({
@@ -92,7 +91,7 @@ function launchTimeline() {
         marginLeft: 10,
         height: 60,
         x: { domain: [0, 100], axis: null }, // Geen as voor een compactere look
-        color: { legend: true},
+        color: { legend: true, domain: Array.from(labels1.values())},
         marks: [
           Plot.barX(gestapeldeData, Plot.stackX({ x: "waarde", fill: "categorie", inset: 0.5 })),
           Plot.textX(gestapeldeData, Plot.stackX({ x: "waarde", text: d => `${d.waarde}%`, fill: "white", fontSize: 12, fontWeight: "bold" }))
@@ -109,31 +108,19 @@ function launchTimeline() {
 </div>
 
 <!-- interactieknoppen -->
-```js
-const clicks = view(Inputs.button("Man/Vrouw"));
-
-```
-
 
 ```js
 
-const gestapeldeDataM = [
-    { groep: "Geslacht", categorie: labels1.get(0), waarde: Number(dataM[0]) },
-    { groep: "Geslacht", categorie: labels1.get(1), waarde: Number(dataM[1]) },
-    { groep: "Geslacht", categorie: labels1.get(2), waarde: Number(dataM[2]) }
+const gestapeldeDataGeslacht = [
+    { groep: "Man", categorie: labels1.get(0), waarde: Number(dataM[0]) },
+    { groep: "Man", categorie: labels1.get(1), waarde: Number(dataM[1]) },
+    { groep: "Man", categorie: labels1.get(2), waarde: Number(dataM[2]) },
+    { groep: "Vrouw", categorie: labels1.get(0), waarde: Number(dataV[0]) },
+    { groep: "Vrouw", categorie: labels1.get(1), waarde: Number(dataV[1]) },
+    { groep: "Vrouw", categorie: labels1.get(2), waarde: Number(dataV[2]) }
 ];
 
-const gestapeldeDataV = [
-    { groep: "Geslacht", categorie: labels1.get(0), waarde: Number(dataV[0]) },
-    { groep: "Geslacht", categorie: labels1.get(1), waarde: Number(dataV[1]) },
-    { groep: "Geslacht", categorie: labels1.get(2), waarde: Number(dataV[2]) }
-];
-
-const genderMap = new Map();
-{
-    genderMap.set(0,gestapeldeDataM);
-    genderMap.set(1,gestapeldeDataV);
-};
+const type = view(Inputs.select(["Man", "Vrouw"], {label: "Kies type mismatch"}));
 
 function geslachtPlot(width){
   return Plot.plot({
@@ -143,36 +130,68 @@ function geslachtPlot(width){
         height: 60,
         x: { domain: [0, 100], label: "Percentage (%)" },
         color: { 
-          scheme: clicks % 2 === 0 ? "pubugn" : "purd",
+          //scheme: clicks % 2 === 0 ? "pubugn" : "purd",
           domain: Array.from(labels1.values()),
           legend: true
         },
         y:{axis:null},
         marks: [
-          Plot.barX(genderMap.get(clicks % 2), Plot.stackX({ 
+          Plot.barX(gestapeldeDataGeslacht, Plot.stackX({ 
             x: "waarde", 
             y: "groep",
             fill: "categorie", 
             inset: 0.5,
-            key: "categorie",
+            filter: d => d.groep === type,
             transition: { duration: 1000, easing: "cubic-in-out" }
           })),
-          Plot.textX(genderMap.get(clicks % 2), Plot.stackX({
+          Plot.textX(gestapeldeDataGeslacht, Plot.stackX({
             x: "waarde", 
+            fill: "white", 
+            fontSize: 12, 
+            fontWeight: "bold",
             text: d => `${d.waarde}%`,
-            key: "categorie",
+            filter: d => d.groep === type,
             transition: { duration: 1000 }
           }))
         ]
       })
 }
 
+
 ```
 
 <div class="grid grid-cols-1">
   <div class="card">
-    ${resize((width) => geslachtPlot(width))}
+    ${Plot.plot({
+      key: "geslacht-plot",
+      width: width,
+      marginLeft: 30,
+      height: 60,
+      x: { domain: [0, 100], label: "Percentage (%)" },
+      color: { 
+        domain: Array.from(labels1.values()),
+        legend: true
+      },
+      y:{axis:null},
+      marks: [
+        Plot.barX(gestapeldeDataGeslacht, Plot.stackX({ 
+          x: "waarde", 
+          fill: "categorie", 
+          inset: 0.5,
+          filter: d => d.groep === type,
+          transition: { duration: 1000, easing: "cubic-in-out" }
+        })),
+        Plot.textX(gestapeldeDataGeslacht, Plot.stackX({
+          x: "waarde", 
+          text: d => `${d.waarde}%`,
+          filter: d => d.groep === type,
+          transition: { duration: 1000 },
+          fill: "white", 
+          fontSize: 12, 
+          fontWeight: "bold" 
+        }))
+      ]
+    })}
 
   </div>
 </div>
-
