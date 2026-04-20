@@ -441,11 +441,11 @@ select8a.addEventListener("input", () => {
 <div class="grid grid-cols-4">
   <div class="card">
     <h2>Totaal</h2>
-    <span class="big">${schoneDataDetail[5].niveau3 + schoneDataDetail[5].niveau6}</span>
+    <span class="big">${(schoneDataDetail[5].niveau3 + schoneDataDetail[5].niveau6).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
   </div>
   <div class="card">
     <h2>Totaal aantal respondenten</h2>
-    <span class="big">${schoneDataDetail[5].niveau5 + schoneDataDetail[5].niveau8}</span>
+    <span class="big">${(schoneDataDetail[5].niveau5 + schoneDataDetail[5].niveau8).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</span>
   </div>
 </div>
 

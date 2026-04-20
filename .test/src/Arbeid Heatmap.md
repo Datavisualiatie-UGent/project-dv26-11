@@ -1,10 +1,10 @@
 ---
 theme: dashboard
-title: Arbeid Heatmap
+title: Vaardigheden die verband houden met onze (toekomstige) job
 toc: false
 ---
 
-# Arbeid Heatmap
+# Vaardigheden die verband houden met onze (toekomstige) job
 
 <p style="max-width:1000px"> 
   Als studenten in de Master wiskunde, leek het ons interessant om een uitgebreid onderzoek over de arbeidsmarkt te bestuderen. Meer specifiek werd er in deze enquête gepeild naar welke vaardigheden het vaakst gebruikt worden naast ‘calculate’, dat is de tijd die iemand in zijn/haar/hun job besteedt aan het maken van relatief complexe berekeningen (met of zonder computer). Je zou zeker kunnen zeggen dat dit een belangrijke component zal zijn in de job van een wiskundige. We bekeken zelf welke vaardigheden het meest gecombineerd worden met ‘calculate’, en ook welke vaardigheid we waarschijnlijk niet zullen moeten beheersen.
@@ -32,6 +32,9 @@ const gestapeldeData = [
     { groep: "Totaal", categorie: niveaus.get(1), waarde: Number(data[116].C), number:3 },
     { groep: "Totaal", categorie: niveaus.get(0), waarde: Number(data[115].C), number:4 }
 ];
+
+const range0 = 0.3;
+const range1=0.95;
 
 const som = data[120].B;
 
@@ -85,6 +88,7 @@ function makeplot(dataplot, title){
         type: "log", 
         scheme: "Magma",
         //legend: true,
+        range: [range0, range1],
         label: "Waarde"
       },
       marks: [
@@ -115,24 +119,24 @@ const textColor = new Map();
   textColor.set(4, "black");
 }
 
-function WiskundeData(row){
+function WiskundeData(row, groep="Totaal"){
   const tot = data[row].B;
   return [
-    { groep: "Totaal", categorie: niveaus.get(4), waarde: Number(data[row].L/tot), number:0 },
-    { groep: "Totaal", categorie: niveaus.get(3), waarde: Number(data[row].J/tot), number:1 },
-    { groep: "Totaal", categorie: niveaus.get(2), waarde: Number(data[row].H/tot), number:2 },
-    { groep: "Totaal", categorie: niveaus.get(1), waarde: Number(data[row].F/tot), number:3 },
-    { groep: "Totaal", categorie: niveaus.get(0), waarde: Number(data[row].D/tot), number:4 }
+    { groep: groep, categorie: niveaus.get(4), waarde: Number(data[row].L/tot), number:0 },
+    { groep: groep, categorie: niveaus.get(3), waarde: Number(data[row].J/tot), number:1 },
+    { groep: groep, categorie: niveaus.get(2), waarde: Number(data[row].H/tot), number:2 },
+    { groep: groep, categorie: niveaus.get(1), waarde: Number(data[row].F/tot), number:3 },
+    { groep: groep, categorie: niveaus.get(0), waarde: Number(data[row].D/tot), number:4 }
 ];
 }
 
 
-function makeplotDetail(data){
+function makeplotDetail(data, legende=true){
   return Plot.plot({
         marginLeft: 60,
         width:1000,
         x: { axis: "top", percent: true },
-        color: { scheme: "Magma", legend:true },
+        color: { scheme: "Magma", legend:legende, range:[range0, range1] },
         //y: {axis: null},
         height:110,
         marks: [
@@ -164,7 +168,16 @@ const chart7 = makeplot(makedata(187), "Guidance");
 const chart8 = makeplot(makedata(211), "Repetitive");
 const chart9 = makeplot(makedata(223), "Procedure");
 
-const detailDigital = WiskundeData(115)
+let detailData = WiskundeData(115, "Digital");
+detailData = detailData.concat(WiskundeData(127, "Reading"));
+detailData = detailData.concat(WiskundeData(139, "Physical"));
+detailData = detailData.concat(WiskundeData(151, "Dexterity"));
+detailData = detailData.concat(WiskundeData(163, "CommInt"));
+detailData = detailData.concat(WiskundeData(175, "CommExt"));
+detailData = detailData.concat(WiskundeData(187, "Guidance"));
+detailData = detailData.concat(WiskundeData(211, "Repetitive"));
+detailData = detailData.concat(WiskundeData(223, "Procedure"));
+
 
 ```
 <div class="card">
@@ -184,10 +197,10 @@ const detailDigital = WiskundeData(115)
     <div style="display: flex; padding: 10px; border-bottom: 1px solid #eee; align-items: center;width:1000px">
       <div style="flex: 3; text-align: left; display: flex; align-items: center;">
         <span style="min-width: 12px; width: 12px; height: 12px; margin-right: 10px; border-radius: 2px; background: ${
-              d.categorie === niveaus.get(4) ? "#3b0f70" : 
-              d.categorie === niveaus.get(3) ? "#8c2981" : 
-              d.categorie === niveaus.get(2) ? "#de4968" : 
-              d.categorie === niveaus.get(1) ? "#fe9f6d" : "#fcfdbf"
+              d.categorie === niveaus.get(4) ? " rgb(100, 26, 128)": 
+              d.categorie === niveaus.get(3) ? "rgb(166, 49, 125)" : 
+              d.categorie === niveaus.get(2) ? "rgb(231, 82, 99)" : 
+              d.categorie === niveaus.get(1) ? "rgb(253, 154, 106)" : "rgb(253, 231, 169)"
         };"></span>
         <span style="white-space: nowrap;">${d.categorie}</span>
       </div> 
@@ -220,7 +233,7 @@ const detailDigital = WiskundeData(115)
     <h4 class="explanation" style="max-width:1000px"> Tijd besteed aan werk met een computer, een tablet of een smartphone, telefoongesprekken niet inbegrepen</h4>
       ${chart1}
     <h1 class="explanation" style="max-width:1000px; margin-top:20px"> Digital in groep met hoogste Calculate</h1>
-    ${makeplotDetail(WiskundeData(115))}
+    ${makeplotDetail(WiskundeData(115, true))}
 
   </div>
 </div>
@@ -236,7 +249,7 @@ const detailDigital = WiskundeData(115)
     <h4 class="explanation" style="max-width=1000px">Tijd besteed aan zwaar lichamelijk werk</h4>
     ${chart3}
     <h1 class="explanation" style="max-width:1000px; margin-top:20px"> Phsical in groep met hoogste Calculate</h1>
-    ${makeplotDetail(WiskundeData(139))}
+    ${makeplotDetail(WiskundeData(139, true))}
   </div>
 </div>
 
@@ -251,11 +264,49 @@ const detailDigital = WiskundeData(115)
     <h4 class="explanation" style="max-width=1000px">Tijd besteed aan het mondeling communiceren met mensen binnen het bedrijf of de organisatie</h4>
     ${chart5}
     <h1 class="explanation" style="max-width:1000px; margin-top:20px"> CommInt in groep met hoogste Calculate</h1>
-    ${makeplotDetail(WiskundeData(163))}
+    ${makeplotDetail(WiskundeData(163, true))}
   </div>
 </div>
 
 <p style="max-width:1000px"> 
   In onze job later zal het ook erg belangrijk zijn om onze bevindingen te communiceren met onze collega’s in het bedrijf. Dat blijkt ook uit dit onderzoek. 53,3% van zij die veel met wiskunde bezig zijn, moeten ook zeer regelmatig communiceren met anderen binnen hun bedrijf. Ook dit lijkt ons eerder logisch, omdat het interpreteren van resultaten uit complexe berekeningen vaak niet eenvoudig is.
+</p>
+
+
+<div class="grid grid-cols-1">
+  <div class="card">
+    <h1 style="max-width:1000px"> Vergelijking alle vaardigheden in de groep met de meeste 'calculate'
+    <h4 class="explanation" style="max-width=1000px">Tijd besteed aan het mondeling communiceren met mensen binnen het bedrijf of de organisatie</h4>
+    ${Plot.plot({
+        marginLeft: 70,
+        width:1000,
+        x: { axis: "top", percent: true },
+        color: { scheme: "Magma", legend:true, range: [range0, range1] },
+        y: {axis: "left"},
+        height:500,
+        marks: [
+          Plot.barX(detailData, {
+            offset: "normalize",
+            y: "groep",
+            x: "waarde",
+            fill: "categorie",
+            sort: { color: null, y: { value: "-x", reduce: "first" } }
+          }),
+          Plot.text(detailData, Plot.stackX({
+            y: "groep",
+            x: "waarde",
+            text: d => d.waarde > 0.05 ? ((d.waarde)*100).toFixed(1) + "%" : ((d.waarde)*100).toFixed(0) + "%" ,
+            fill: d => textColor.get(d.number)
+          })
+          )
+        ]
+      })}
+
+
+  </div>
+</div>
+
+<p style="max-width:1000px"> 
+  tekst enal
 </p>
 
