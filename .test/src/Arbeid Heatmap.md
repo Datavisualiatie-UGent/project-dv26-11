@@ -220,12 +220,13 @@ detailData = detailData.concat(WiskundeData(223, "Procedure"));
   </div>
 </div>
 
-</div>
-
-<p style="max-width:1000px"> 
+<p style="max-width:1000px; font-size:18px; margin-top:25px"> 
   Wat ons meteen opvalt is dat zeer weinig mensen aangeven als voornaamste taak bezig te zijn met het maken van complexe berekeningen. Bijna 60% geeft zelfs aan dit nooit te moeten doen.
   We zullen ons hier dus focussen op zij die aangeven het grootste deel van de tijd bezig te zijn met wiskunde, wat maar 2% is, en zij die aangeven meer dan de helft van de tijd te spenderen aan berekeningen, wat toch ruim 5% van de ondervraagden bedraagt. De totale groep bestaat uit 360 personen.
 </p>
+</div>
+
+
 
 <div class="grid grid-cols-1">
   <div class="card">
@@ -234,13 +235,14 @@ detailData = detailData.concat(WiskundeData(223, "Procedure"));
       ${chart1}
     <h1 class="explanation" style="max-width:1000px; margin-top:20px"> Digital in groep met hoogste Calculate</h1>
     ${makeplotDetail(WiskundeData(115, true))}
-
+      <p style="max-width:1000px; font-size:18px; margin-top:25px"> 
+      Uit het onderzoek blijkt dat we zeer vaak zullen moeten werken met een computer, tablet pf smartphone. Dit is vanzelfsprekend aangezien de meeste complexe berekeningen gedaan worden met een computer en niet meer met de hand. 85,6% van zij die ten minste de helft van de tijd met complexe berekeningen bezig zijn, geven dan ook aan minstens de helft van de tijd digitaal aan het werk te zijn. Slechts 3,8% van de wiskundigen geeft aan nooit digitaal te moeten werken.
+    </p>
   </div>
+
 </div>
 
-<p style="max-width:1000px"> 
-  Uit het onderzoek blijkt dat we zeer vaak zullen moeten werken met een computer, tablet pf smartphone. Dit is vanzelfsprekend aangezien de meeste complexe berekeningen gedaan worden met een computer en niet meer met de hand. 85,6% van zij die ten minste de helft van de tijd met complexe berekeningen bezig zijn, geven dan ook aan minstens de helft van de tijd digitaal aan het werk te zijn. Slechts 3,8% van de wiskundigen geeft aan nooit digitaal te moeten werken.
-</p>
+
 
 
 <div class="grid grid-cols-1">
@@ -250,12 +252,14 @@ detailData = detailData.concat(WiskundeData(223, "Procedure"));
     ${chart3}
     <h1 class="explanation" style="max-width:1000px; margin-top:20px"> Phsical in groep met hoogste Calculate</h1>
     ${makeplotDetail(WiskundeData(139, true))}
+      <p style="max-width:1000px; font-size:18px; margin-top:25px"> 
+      Zoals duidelijk op de heatmap, zijn mensen die wiskundig bezig zijn, over het algemeen niet fysiek bezig. In het totaal besteedt maar 11% van de wiskundigen ook veel tijd aan fysieke arbeid op het werk, terwijl 72% van onze groep aangeeft zich nooit fysiek te moeten inspannen. De kans lijkt ons dus relatief groot dat ook wij niet met zware benen en stijve arme thuis zullen komen na het werk.
+    </p>
   </div>
+
 </div>
 
-<p style="max-width:1000px"> 
-  Zoals duidelijk op de heatmap, zijn mensen die wiskundig bezig zijn, over het algemeen niet fysiek bezig. In het totaal besteedt maar 11% van de wiskundigen ook veel tijd aan fysieke arbeid op het werk, terwijl 72% van onze groep aangeeft zich nooit fysiek te moeten inspannen. De kans lijkt ons dus relatief groot dat ook wij niet met zware benen en stijve arme thuis zullen komen na het werk.
-</p>
+
 
 
 <div class="grid grid-cols-1">
@@ -265,12 +269,14 @@ detailData = detailData.concat(WiskundeData(223, "Procedure"));
     ${chart5}
     <h1 class="explanation" style="max-width:1000px; margin-top:20px"> CommInt in groep met hoogste Calculate</h1>
     ${makeplotDetail(WiskundeData(163, true))}
+     <p style="max-width:1000px; font-size:18px; margin-top:25px"> 
+      In onze job later zal het ook erg belangrijk zijn om onze bevindingen te communiceren met onze collega’s in het bedrijf. Dat blijkt ook uit dit onderzoek. 53,3% van zij die veel met wiskunde bezig zijn, moeten ook zeer regelmatig communiceren met anderen binnen hun bedrijf. Ook dit lijkt ons eerder logisch, omdat het interpreteren van resultaten uit complexe berekeningen vaak niet eenvoudig is.
+    </p>
   </div>
+ 
 </div>
 
-<p style="max-width:1000px"> 
-  In onze job later zal het ook erg belangrijk zijn om onze bevindingen te communiceren met onze collega’s in het bedrijf. Dat blijkt ook uit dit onderzoek. 53,3% van zij die veel met wiskunde bezig zijn, moeten ook zeer regelmatig communiceren met anderen binnen hun bedrijf. Ook dit lijkt ons eerder logisch, omdat het interpreteren van resultaten uit complexe berekeningen vaak niet eenvoudig is.
-</p>
+
 
 
 <div class="grid grid-cols-1">
@@ -301,12 +307,13 @@ detailData = detailData.concat(WiskundeData(223, "Procedure"));
           )
         ]
       })}
-
+    <p style="max-width:1000px; font-size:18px; margin-top:25px"> 
+    tekst enal
+    </p>
 
   </div>
+  
 </div>
 
-<p style="max-width:1000px"> 
-  tekst enal
-</p>
+
 

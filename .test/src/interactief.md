@@ -47,6 +47,17 @@ const schoneData = data.map(d => ({
   niveau11: d["Link diploma - job__________"]
 }));
 
+const tooltip = [
+  {groep: "Onderwijsniveau", titel:"Laag", label:"lager secundair onderwijs"},
+  {groep: "Onderwijsniveau", titel:"Midden", label:"hoger secundair onderwijs"},
+  {groep: "Onderwijsniveau", titel:"Hoog", label:"hoger onderwijs"},
+  {groep: "Beroepsgroep", titel:"Groep1", label:"Managers; Intellectuele,wetenschappelijke en artistieke beroepen; ; Technici en verwante beroepen"},
+  {groep: "Beroepsgroep", titel:"Groep2", label:"Administratief personeel; Dienstverlenend personeel en verkopers"},
+  {groep: "Beroepsgroep", titel:"Groep3", label:"Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs"},
+  {groep: "Beroepsgroep", titel:"Groep4", label:"Elementaire beroepen"}
+];
+
+
 const dataTotaal = [
   { groep: "Totaal", categorie: labels1[0], waarde: Number(schoneData[3].niveau4)},
   { groep: "Totaal", categorie: labels1[1], waarde: Number(schoneData[4].niveau4) },
@@ -130,6 +141,8 @@ const dataTotaal = [
   {groep: "Groep4", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau13) },
   {groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) }
 ];
+
+
 
 const cutoff =12;
 
@@ -250,7 +263,7 @@ const chart8 = createStackedChart(dataTotaal, "Groep1")
 const select1 = Inputs.select(["Man", "Vrouw"], {label: "Geslacht:"});
 select1.addEventListener("input", () => chart1.update(select1.value));
 
-const select2 = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold"], {label: "Niveau:"});
+const select2 = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold"], {label: "Onderwijsniveau:"});
 select2.addEventListener("input", () => chart2.update(select2.value));
 
 const select3 = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
@@ -393,7 +406,7 @@ select1a.addEventListener("input", () => {
     beginGroep[1]= select1a.value;
     update2(beginGroep);
   });
-const select2a = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold", " "], {label: "Niveau:"});
+const select2a = Inputs.select(["Laaggeschoold", "Middengeschoold", "Hooggeschoold", " "], {label: "Onderwijsniveau:"});
 select2a.addEventListener("input", () => {
     beginGroep[2]= select2a.value;
     update2(beginGroep);
@@ -490,8 +503,13 @@ select8a.addEventListener("input", () => {
     ${svg2.node()}
 
 </div>
-  <p style="max-width:1000px"> *Laag: maximaal een diploma van het lager secundair onderwijs. Midden: een diploma behaald van het hoger secundair onderwijs, maar geen diploma van het hoger onderwijs. Hoog: een diploma van het hoger onderwijs.</p>
-  <p style="max-width:1000px"> **Groep 1: Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen, Groep 2: Administratief personeel; Dienstverlenend personeel en verkopers,Groep 3: Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs,Groep 4: Elementaire beroepen.</p>
+  <p style="max-width:1000px; margin-bottom:2px"> *Laag: maximaal een diploma van het lager secundair onderwijs. </p>
+  <p style="max-width:1000px; margin-top:2px; margin-bottom:2px"> Midden: een diploma behaald van het hoger secundair onderwijs, maar geen diploma van het hoger onderwijs. </p>
+  <p style="max-width:1000px; margin-top:2px">Hoog: een diploma van het hoger onderwijs.</p>
+  <p style="max-width:1000px; margin-bottom:2px"> **Groep 1: Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen,</p>
+  <p style="max-width:1000px; margin-top:2px; margin-bottom:2px"> Groep 2: Administratief personeel; Dienstverlenend personeel en verkopers,</p>
+  <p style="max-width:1000px; margin-top:2px; margin-bottom:2px"> Groep 3: Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs,</p>
+  <p style="max-width:1000px; margin-top:2px; margin-bottom:2px"> Groep 4: Elementaire beroepen.</p>
 </div>
 
 
@@ -510,7 +528,7 @@ select8a.addEventListener("input", () => {
   </div>
 
   <p style="max-width:1000px"> Laag: maximaal een diploma van het lager secundair onderwijs. </p>
-  <p>Midden: een diploma behaald van het hoger secundair onderwijs, maar geen diploma van het hoger onderwijs.</p> <p>Hoog: een diploma van het hoger onderwijs.</p>
+  <p style="max-width:1000px">Midden: een diploma behaald van het hoger secundair onderwijs, maar geen diploma van het hoger onderwijs.</p> <p>Hoog: een diploma van het hoger onderwijs.</p>
 
   <div id="chart", style="margin-top: 10px;">
     ${chart2.node}
@@ -574,10 +592,10 @@ select8a.addEventListener("input", () => {
 
   </div>
   <div id="chart", style="margin-top: 10px;">
-    <p> Groep 1: Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen, </p>
-    <p>Groep 2: Administratief personeel; Dienstverlenend personeel en verkopers, </p>
-    <p>Groep 3: Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs,</p>
-    <p>Groep 4: Elementaire beroepen.</p>
+    <p style="max-width:1000px"> Groep 1: Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen, </p>
+    <p style="max-width:1000px">Groep 2: Administratief personeel; Dienstverlenend personeel en verkopers, </p>
+    <p style="max-width:1000px">Groep 3: Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs,</p>
+    <p style="max-width:1000px">Groep 4: Elementaire beroepen.</p>
     ${chart8.node}
 
   </div>
