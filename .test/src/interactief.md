@@ -92,6 +92,9 @@ const dataTotaal = [
   { groep: "Waals", categorie: labels1[0], waarde: Number(schoneDataDetail[25].niveau10) },
   { groep: "Waals", categorie: labels1[1], waarde: Number(schoneDataDetail[26].niveau10) },
   { groep: "Waals", categorie: labels1[2], waarde: Number(schoneDataDetail[27].niveau10) },
+  { groep: "  ", categorie: labels1[0], waarde:0 },
+  { groep: "  ", categorie: labels1[1], waarde:0},
+  { groep: "  ", categorie: labels1[2], waarde:0},
   { groep: "Belgie", categorie: labels1[0], waarde: Number(schoneDataDetail[35].niveau4) },
   { groep: "Belgie", categorie: labels1[1], waarde: Number(schoneDataDetail[36].niveau4) },
   { groep: "Belgie", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau4) },
@@ -101,6 +104,9 @@ const dataTotaal = [
   { groep: "niet-EU27", categorie: labels1[0], waarde: Number(schoneDataDetail[35].niveau10) },
   { groep: "niet-EU27", categorie: labels1[1], waarde: Number(schoneDataDetail[36].niveau10) },
   { groep: "niet-EU27", categorie: labels1[2], waarde: Number(schoneDataDetail[37].niveau10) },
+  { groep: "   ", categorie: labels1[0], waarde:0 },
+  { groep: "   ", categorie: labels1[1], waarde:0},
+  { groep: "   ", categorie: labels1[2], waarde:0},
   { groep: "IAB-werkloze", categorie: labels1[0], waarde: Number(schoneDataDetail[45].niveau4) },
   { groep: "IAB-werkloze", categorie: labels1[1], waarde: Number(schoneDataDetail[46].niveau4) },
   { groep: "IAB-werkloze", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau4) },
@@ -110,12 +116,18 @@ const dataTotaal = [
   { groep: "IAB-niet-beroepsactieve", categorie: labels1[0], waarde: Number(schoneDataDetail[45].niveau10) },
   { groep: "IAB-niet-beroepsactieve", categorie: labels1[1], waarde: Number(schoneDataDetail[46].niveau10) },
   { groep: "IAB-niet-beroepsactieve", categorie: labels1[2], waarde: Number(schoneDataDetail[47].niveau10) },
+  { groep: "    ", categorie: labels1[0], waarde:0 },
+  { groep: "    ", categorie: labels1[1], waarde:0},
+  { groep: "    ", categorie: labels1[2], waarde:0},
   { groep: "Vast", categorie: labels1[0], waarde: Number(schoneDataDetail[55].niveau4) },
   { groep: "Vast", categorie: labels1[1], waarde: Number(schoneDataDetail[56].niveau4) },
   { groep: "Vast", categorie: labels1[2], waarde: Number(schoneDataDetail[57].niveau4) },
   { groep: "Tijdelijk", categorie: labels1[0], waarde: Number(schoneDataDetail[55].niveau7) },
   {groep: "Tijdelijk", categorie: labels1[1], waarde: Number(schoneDataDetail[56].niveau7) },
   {groep: "Tijdelijk", categorie: labels1[2], waarde: Number(schoneDataDetail[57].niveau7) },
+  { groep: "     ", categorie: labels1[0], waarde:0 },
+  { groep: "     ", categorie: labels1[1], waarde:0},
+  { groep: "     ", categorie: labels1[2], waarde:0},
   {groep: "0 tot 1 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau4) },
   {groep: "0 tot 1 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau4) },
   {groep: "0 tot 1 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau4) },
@@ -128,6 +140,9 @@ const dataTotaal = [
   {groep: "Meer dan 5 jaar", categorie: labels1[0], waarde: Number(schoneDataDetail[65].niveau13) },
   {groep: "Meer dan 5 jaar", categorie: labels1[1], waarde: Number(schoneDataDetail[66].niveau13) },
   {groep: "Meer dan 5 jaar", categorie: labels1[2], waarde: Number(schoneDataDetail[67].niveau13) },
+  { groep: "      ", categorie: labels1[0], waarde:0 },
+  { groep: "      ", categorie: labels1[1], waarde:0},
+  { groep: "      ", categorie: labels1[2], waarde:0},
   {groep: "Groep1", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau4) },
   {groep: "Groep1", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau4) },
   {groep: "Groep1", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau4) },
@@ -139,7 +154,10 @@ const dataTotaal = [
   {groep: "Groep3", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau10) },
   {groep: "Groep4", categorie: labels1[0], waarde: Number(schoneDataDetail[75].niveau13) },
   {groep: "Groep4", categorie: labels1[1], waarde: Number(schoneDataDetail[76].niveau13) },
-  {groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) }
+  {groep: "Groep4", categorie: labels1[2], waarde: Number(schoneDataDetail[77].niveau13) },
+  { groep: "       ", categorie: labels1[0], waarde:0 },
+  { groep: "       ", categorie: labels1[1], waarde:0},
+  { groep: "       ", categorie: labels1[2], waarde:0}
 ];
 
 
@@ -411,32 +429,32 @@ select2a.addEventListener("input", () => {
     beginGroep[2]= select2a.value;
     update2(beginGroep);
   });
-const select3a = Inputs.select(["Vlaams", "Waals", "Brussel"], {label: "Gewest:"});
+const select3a = Inputs.select(["Vlaams", "Waals", "Brussel", "  "], {label: "Gewest:"});
 select3a.addEventListener("input", () => {
     beginGroep[3]= select3a.value;
     update2(beginGroep);
   });
-const select4a = Inputs.select(["Belgie", "EU27", "niet-EU27"], {label: "Herkomst nationaliteit:"});
+const select4a = Inputs.select(["Belgie", "EU27", "niet-EU27", "   "], {label: "Herkomst nationaliteit:"});
 select4a.addEventListener("input", () => {
     beginGroep[4]= select4a.value;
     update2(beginGroep);
   });
-const select5a = Inputs.select(["IAB-werkloze", "Werkende IAB-actieve", "IAB-niet-beroepsactieve"], {label: "Arbeidsmarktstatuut :"});
+const select5a = Inputs.select(["IAB-werkloze", "Werkende IAB-actieve", "IAB-niet-beroepsactieve", "    "], {label: "Arbeidsmarktstatuut :"});
 select5a.addEventListener("input", () => {
     beginGroep[5]= select5a.value;
     update2(beginGroep);
   });
-const select6a = Inputs.select(["Vast", "Tijdelijk"], {label: "Vast/Tijdelijk contract:"});
+const select6a = Inputs.select(["Vast", "Tijdelijk", "     "], {label: "Vast/Tijdelijk contract:"});
 select6a.addEventListener("input", () => {
     beginGroep[6]= select6a.value;
     update2(beginGroep);
   });
-const select7a = Inputs.select(["0 tot 1 jaar", "Meer dan 1 tot 2 jaar", "Meer dan 2 tot 5 jaar", "Meer dan 5 jaar"], {label: "Aantal jaar aan het werk:"});
+const select7a = Inputs.select(["0 tot 1 jaar", "Meer dan 1 tot 2 jaar", "Meer dan 2 tot 5 jaar", "Meer dan 5 jaar", "      "], {label: "Aantal jaar aan het werk:"});
 select7a.addEventListener("input", () => {
     beginGroep[7]= select7a.value;
     update2(beginGroep);
   });
-const select8a = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4"], {label: "Beroepsgroep:"});
+const select8a = Inputs.select(["Groep1", "Groep2", "Groep3", "Groep4", "       "], {label: "Beroepsgroep:"});
 select8a.addEventListener("input", () => {
     beginGroep[8]= select8a.value;
     update2(beginGroep);
