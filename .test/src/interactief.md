@@ -47,15 +47,27 @@ const schoneData = data.map(d => ({
   niveau11: d["Link diploma - job__________"]
 }));
 
-const tooltip = [
+const tooltiptext = [
   {groep: "Onderwijsniveau", titel:"Laag", label:"lager secundair onderwijs"},
   {groep: "Onderwijsniveau", titel:"Midden", label:"hoger secundair onderwijs"},
   {groep: "Onderwijsniveau", titel:"Hoog", label:"hoger onderwijs"},
-  {groep: "Beroepsgroep", titel:"Groep1", label:"Managers; Intellectuele,wetenschappelijke en artistieke beroepen; ; Technici en verwante beroepen"},
+  {groep: "Beroepsgroep", titel:"Groep1", label:"Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen"},
   {groep: "Beroepsgroep", titel:"Groep2", label:"Administratief personeel; Dienstverlenend personeel en verkopers"},
   {groep: "Beroepsgroep", titel:"Groep3", label:"Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs"},
   {groep: "Beroepsgroep", titel:"Groep4", label:"Elementaire beroepen"}
 ];
+
+const tooltiptextmap = new Map();
+tooltiptextmap.set('tooltip1-0', "lager secundair onderwijs");
+tooltiptextmap.set('tooltip1-1', "hoger secundair onderwijs");
+tooltiptextmap.set('tooltip1-2', "hoger onderwijs");
+tooltiptextmap.set('tooltip1-3', "");
+tooltiptextmap.set('tooltip2-0', "Managers; Intellectuele,wetenschappelijke en artistieke beroepen; Technici en verwante beroepen");
+tooltiptextmap.set('tooltip2-1', "Administratief personeel; Dienstverlenend personeel en verkopers");
+tooltiptextmap.set('tooltip2-2', "Geschoolde landbouwers, bosbouwers en vissers; Ambachtslieden; Bedieners van machines en installaties, assembleurs");
+tooltiptextmap.set('tooltip2-3', "Elementaire beroepen");
+tooltiptextmap.set('tooltip2-4', "");
+
 
 
 const dataTotaal = [
@@ -191,6 +203,7 @@ function createStackedChart(data, initialGroup) {
 
   // De eigenlijke update logica
   function update(selectedGroup) {
+
     const filtered = data.filter(d => d.groep === selectedGroup);
     const series = d3.stack()
       .keys(labels1)
@@ -459,7 +472,62 @@ select8a.addEventListener("input", () => {
     beginGroep[8]= select8a.value;
     update2(beginGroep);
   });
+
+
+import * as Popper from "https://cdn.skypack.dev/@popperjs/core@2";
+
+const buttons = document.querySelectorAll('.tip-button');
+
+buttons.forEach(button => {
+    const tooltipId = button.getAttribute('data-target');
+    const tooltip = document.querySelector(`#${tooltipId}`);
+
+    if (!button || !tooltip) return;
+
+    const popperInstance = Popper.createPopper(button, tooltip, {
+      placement: 'bottom',
+      modifiers: [{ name: 'offset', options: { offset: [0, -10] } }],
+    });
+
+    function show() {
+      tooltip.setAttribute('data-show', '');
+      const inputElement = button.querySelector('select');
+      if (inputElement) {
+        const geselecteerdeWaarde = inputElement.value;
+        const mapwaarde = tooltip.getAttribute('id') + '-'+ geselecteerdeWaarde;
+        const uitleg = tooltiptextmap.get(mapwaarde);
+        tooltip.innerText = uitleg;
+      }
+      popperInstance.update();
+    }
+
+    function hide() {
+      tooltip.removeAttribute('data-show');
+    }
+
+    const showEvents = ['mouseenter', 'focus'];
+    const hideEvents = ['mouseleave', 'blur'];
+
+    showEvents.forEach(event => button.addEventListener(event, show));
+    hideEvents.forEach(event => button.addEventListener(event, hide));
+  });
 ```
+<style>
+  .tooltip {
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    display: none;
+    z-index: 1000;
+  }
+
+  .tooltip[data-show] {
+    display: block;
+  }
+</style>
+
 
 <div class="grid grid-cols-1" style="height:200px">
     <p style="max-width:1000px"> In een arbeidsonderzoek onderzocht men of het onderwijsniveau van de ondervraagden overeenstemde met het niveau dat hun job eigenlijk van hen vraagt.
@@ -492,8 +560,12 @@ select8a.addEventListener("input", () => {
   <div >
     ${select1a}
   </div>
-  <div >
+
+  <div class="tip-button" data-target="tooltip1">
     ${select2a}*
+    
+  <div id="tooltip1" role="tooltip" class="tooltip"> Rune is cool</div>
+
   </div>
   <div >
     ${select3a}
@@ -510,8 +582,9 @@ select8a.addEventListener("input", () => {
   <div >
     ${select7a}
   </div>
-  <div>
+  <div class="tip-button" data-target="tooltip2">
     ${select8a}**
+    <div id="tooltip2" role="tooltip" class="tooltip"> Astrid is cool</div>
   </div>
 </div>
 
@@ -618,4 +691,3 @@ select8a.addEventListener("input", () => {
 
   </div>
 </div>
-
