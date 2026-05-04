@@ -4,15 +4,12 @@ toc: false
 
 <div class="hero">
   <h1>Datavisualisatie</h1>
-  <h2>Welcome! :) Hier moeten we onze motivatie geven en vermelden waar we onze data gevonden hebben dat lijkt me belangrijk. .</h2>
+  <h2>Voor dit project bekeken we enquètes over de arbeidsmarkt, iets waar we als masterstudenten binnenkort ook deel van zullen uitmaken. </h2>
+  <h2>Op onze interactieve pagina kan je zelf aan de slag met data over het beroep van mensen, en of hun opleidingsniveau hiermee overeenstemt. Je kan zelf ontdekken hoe verschillend deze twee zijn tussen mannen en vrouwen, of je herkomst hier iets mee te maken zou kunnen hebben, of er verschillen zijn per gewest en nog veel meer.</h2>
+  <h2> In onze case study onderzochten wij welke vaardigheden wij als wiskundigen zeker nog nodig zullen hebben, buiten het maken van complexe berekeningen. We bekeken ook welke vaardigheden voor ons van minder belang zullen zijn in onze toekomstige job. </h2>
 </div>
 
-We moeten ook even uitleggen wat onze case study en interactieve paginas zijn (heel kort)
----
 
-## Next steps
-
-Here are some ideas of things you could try…
 
 <style>
 
