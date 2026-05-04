@@ -12,6 +12,22 @@ toc: false
 
 <p>Bron; EAK - Enquête naar de Arbeidskrachten 2022 - Ad hoc module "Vaardigheden die verband houden met de job"</p>
 
+<style>
+   .tooltip {
+        background: #333;
+        color: white;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+        display:none;
+      }
+
+  .tooltip[data-show] {
+    display: block;
+  }
+</style>
+
 ```js
 const niveaus = new Map();
 {
@@ -280,10 +296,35 @@ detailData = detailData.concat(WiskundeData(223, "Procedure"));
 
 
 <div class="grid grid-cols-1">
-  <div class="card">
+  <div class="card" id="groot">
     <h1 style="max-width:1000px"> Vergelijking alle vaardigheden in de groep met de meeste 'calculate'
     <h4 class="explanation" style="max-width=1000px">Tijd besteed aan het mondeling communiceren met mensen binnen het bedrijf of de organisatie</h4>
-    ${Plot.plot({
+    ${plot}
+
+  <div id="tooltip0" role="tooltip" class="tooltip"> Tijd besteed aan zwaar lichamelijk werk</div>
+  <div id="tooltip1" role="tooltip" class="tooltip"> Tijd besteed aan taken waarbij precieze handelingen moeten uitgevoerd worden met de vingers zoals bij chirurgie of tekenen</div>
+  <div id="tooltip2" role="tooltip" class="tooltip"> Tijd besteed aan adviseren, opleiden en onderwijzen van andere mensen zoals klanten, studenten of collega's</div>
+  <div id="tooltip3" role="tooltip" class="tooltip"> Tijd besteed aan het lezen van werkgerelateerde handleidingen of technische documenten, exclusief brieven of e-mails</div>
+  <div id="tooltip4" role="tooltip" class="tooltip"> Tijd besteed aan het mondeling communiceren met mensen van buiten het bedrijf of de organisatie</div>
+  <div id="tooltip5" role="tooltip" class="tooltip"> Mate waarin de job repetitieve taken omvat </div>
+  <div id="tooltip6" role="tooltip" class="tooltip"> Mate waarin de taken nauwkeurig omschreven zijn door strikte procedures zoals kookrecepten, medische protocollen of bouwplannen</div>
+  <div id="tooltip7" role="tooltip" class="tooltip"> Tijd besteed aan het mondeling communiceren met mensen binnen het bedrijf of de organisatie</div>
+  <div id="tooltip8" role="tooltip" class="tooltip"> Tijd besteed aan werk met een computer, een tablet of een smartphone, telefoongesprekken niet inbegrepen.</div>
+
+
+  <p style="max-width:1000px; font-size:18px; margin-top:25px"> 
+      Hier zetten we even alle mogelijke vaardigheden op een rijtje. Zoals eerder gezegd zal fysieke arbeid niet echt een vaardigheid zijn waarover wij zullen moeten beschikken, noch zullen we niet moeten beschikken over een zeer ontwikkelde fijne motoriek (dexterity).
+      Zoals jullie hier zien zullen onze digitale vaardigheden zeker van pas komen, en is de kans dat we zullen moeten communiceren met anderen uit ons bedrijf ook zeer groot.
+  
+  </p>
+
+  </div>
+  
+</div>
+
+```js
+
+const plot = Plot.plot({
         marginLeft: 70,
         width:1000,
         x: { axis: "top", percent: true },
@@ -306,16 +347,46 @@ detailData = detailData.concat(WiskundeData(223, "Procedure"));
           })
           )
         ]
-      })}
-    <p style="max-width:1000px; font-size:18px; margin-top:25px"> 
-      Hier zetten we even alle mogelijke vaardigheden op een rijtje. Zoals eerder gezegd zal fysieke arbeid niet echt een vaardigheid zijn waarover wij zullen moeten beschikken, noch zullen we niet moeten beschikken over een zeer ontwikkelde fijne motoriek (dexterity).
-      Zoals jullie hier zien zullen onze digitale vaardigheden zeker van pas komen, en is de kans dat we zullen moeten communiceren met anderen uit ons bedrijf ook zeer groot.
-  
-  </p>
+      });
 
-  </div>
-  
-</div>
+import * as Popper from "https://cdn.skypack.dev/@popperjs/core@2";
 
+function makeTooltips(){
+  const test = plot;
+  const test2 = test.querySelector("g[aria-label='y-axis tick label']");
+  const labels = test2.querySelectorAll("text[y='0.32em']");
 
+  let teller = 0;
+  labels.forEach(button => {
+      const tooltipId = 'tooltip' +teller;
+      const tooltip = document.querySelector(`#${tooltipId}`);
+      button.setAttribute('data-target','tooltipId');
+      teller++;
+
+      if (!button || !tooltip) return;
+
+      const popperInstance = Popper.createPopper(button, tooltip, {
+        placement: 'bottom',
+        modifiers: [{ name: 'offset', options: { offset: [-350, -30] } }],
+      });
+
+      function show() {
+        tooltip.setAttribute('data-show', '');
+      }
+
+      function hide() {
+        tooltip.removeAttribute('data-show');
+      }
+
+      const showEvents = ['mouseenter', 'focus'];
+      const hideEvents = ['mouseleave', 'blur'];
+
+      showEvents.forEach(event => button.addEventListener(event, show));
+      hideEvents.forEach(event => button.addEventListener(event, hide));
+    });
+}
+
+makeTooltips()
+
+```
 
